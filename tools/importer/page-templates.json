@@ -4,20 +4,63 @@
   },
   "templates": [
     {
-      "name": "home",
+      "name": "adventures",
       "urls": [
-        "https://www.wknd.site/us/en.html"
+        "https://www.wknd.site/us/en/adventures.html"
       ],
-      "representativeUrl": "https://www.wknd.site/us/en.html",
-      "description": "WKND US homepage - hero carousel, featured article, article cards, adventure banner, and adventure cards",
-      "urlPattern": "/us/*",
+      "representativeUrl": "https://www.wknd.site/us/en/adventures.html",
+      "description": "WKND adventures listing page - hero teaser and adventure cards grid",
+      "urlPattern": "/us/en/*",
       "blocks": [
         {
-          "name": "carousel-hero",
+          "name": "hero-banner",
           "instances": [
-            ".carousel.panelcontainer.cmp-carousel--hero"
+            ".teaser.cmp-teaser--hero"
           ]
         },
+        {
+          "name": "cards-article",
+          "instances": [
+            ".cmp-tabs__tabpanel--active .image-list.list"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Page title",
+          "selector": "main.cmp-layout-container--fixed:nth-of-type(1)",
+          "style": null,
+          "blocks": [],
+          "defaultContent": ["h1"]
+        },
+        {
+          "id": "section-2",
+          "name": "Adventures teaser hero",
+          "selector": ".teaser.cmp-teaser--hero",
+          "style": null,
+          "blocks": ["hero-banner"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-3",
+          "name": "Current Adventures listing",
+          "selector": ".tabs.panelcontainer",
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "magazine",
+      "urls": [
+        "https://www.wknd.site/us/en/magazine.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en/magazine.html",
+      "description": "WKND magazine listing page - featured article, all articles grid, members-only teasers",
+      "urlPattern": "/us/en/*",
+      "blocks": [
         {
           "name": "columns-featured",
           "instances": [
@@ -27,28 +70,23 @@
         {
           "name": "cards-article",
           "instances": [
-            ".image-list.list"
-          ]
-        },
-        {
-          "name": "hero-banner",
-          "instances": [
-            ".teaser.cmp-teaser--hero"
+            ".image-list.list",
+            ".teaser.cmp-teaser--secure"
           ]
         }
       ],
       "sections": [
         {
           "id": "section-1",
-          "name": "Hero carousel",
-          "selector": ".carousel.panelcontainer.cmp-carousel--hero",
+          "name": "Page title",
+          "selector": "main.cmp-layout-container--fixed:nth-of-type(1)",
           "style": null,
-          "blocks": ["carousel-hero"],
-          "defaultContent": []
+          "blocks": [],
+          "defaultContent": ["h1"]
         },
         {
           "id": "section-2",
-          "name": "Featured article",
+          "name": "Featured article teaser",
           "selector": ".teaser.cmp-teaser--featured",
           "style": "highlight",
           "blocks": ["columns-featured"],
@@ -56,34 +94,19 @@
         },
         {
           "id": "section-3",
-          "name": "Recent Articles",
-          "selector": ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(2)",
+          "name": "All articles grid",
+          "selector": ".image-list.list",
           "style": null,
           "blocks": ["cards-article"],
-          "defaultContent": [
-            ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(2)",
-            ".separator.aem-GridColumn.aem-GridColumn--default--12"
-          ]
+          "defaultContent": []
         },
         {
           "id": "section-4",
-          "name": "Climbing New Zealand banner",
-          "selector": ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
-          "style": null,
-          "blocks": ["hero-banner"],
-          "defaultContent": [
-            ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(6)"
-          ]
-        },
-        {
-          "id": "section-5",
-          "name": "Where do you want to go?",
-          "selector": ".title.aem-GridColumn.aem-GridColumn--default--12",
+          "name": "Members Only teasers",
+          "selector": ".teaser.cmp-teaser--secure",
           "style": null,
           "blocks": ["cards-article"],
-          "defaultContent": [
-            ".title.aem-GridColumn.aem-GridColumn--default--12"
-          ]
+          "defaultContent": []
         }
       ]
     }
