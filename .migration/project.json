@@ -1,0 +1,11 @@
+{
+  "type": "da",
+  "sites": {
+    "eds-assignment-sudhansu": {
+      "previewOrg": "sudhansu-acharya",
+      "previewSite": "eds-assignment-sudhansu",
+      "contentHostUrl": "https://content.da.live/sudhansu-acharya/eds-assignment-sudhansu/",
+      "libraryUrl": "https://main--sta-boilerplate--aemdemos.aem.page/tools/sidekick/library.json"
+    }
+  }
+}
