@@ -1,0 +1,91 @@
+{
+  "metadata": {
+    "projectType": "da"
+  },
+  "templates": [
+    {
+      "name": "home",
+      "urls": [
+        "https://www.wknd.site/us/en.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en.html",
+      "description": "WKND US homepage - hero carousel, featured article, article cards, adventure banner, and adventure cards",
+      "urlPattern": "/us/*",
+      "blocks": [
+        {
+          "name": "carousel-hero",
+          "instances": [
+            ".carousel.panelcontainer.cmp-carousel--hero"
+          ]
+        },
+        {
+          "name": "columns-featured",
+          "instances": [
+            ".teaser.cmp-teaser--featured"
+          ]
+        },
+        {
+          "name": "cards-article",
+          "instances": [
+            ".image-list.list"
+          ]
+        },
+        {
+          "name": "hero-banner",
+          "instances": [
+            ".teaser.cmp-teaser--hero"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Hero carousel",
+          "selector": ".carousel.panelcontainer.cmp-carousel--hero",
+          "style": null,
+          "blocks": ["carousel-hero"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-2",
+          "name": "Featured article",
+          "selector": ".teaser.cmp-teaser--featured",
+          "style": "highlight",
+          "blocks": ["columns-featured"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-3",
+          "name": "Recent Articles",
+          "selector": ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(2)",
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [
+            ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(2)",
+            ".separator.aem-GridColumn.aem-GridColumn--default--12"
+          ]
+        },
+        {
+          "id": "section-4",
+          "name": "Climbing New Zealand banner",
+          "selector": ".teaser.cmp-teaser--hero.cmp-teaser--imagebottom",
+          "style": null,
+          "blocks": ["hero-banner"],
+          "defaultContent": [
+            ".title.cmp-title--underline.aem-GridColumn.aem-GridColumn--default--12:nth-of-type(6)"
+          ]
+        },
+        {
+          "id": "section-5",
+          "name": "Where do you want to go?",
+          "selector": ".title.aem-GridColumn.aem-GridColumn--default--12",
+          "style": null,
+          "blocks": ["cards-article"],
+          "defaultContent": [
+            ".title.aem-GridColumn.aem-GridColumn--default--12"
+          ]
+        }
+      ]
+    }
+  ]
+}
