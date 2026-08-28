@@ -33,8 +33,12 @@
     ]
   },
   "usage": {
-    "pagesUsing": ["/us/en"],
-    "reuseCount": 2,
-    "lastUsed": "2026-08-28T00:00:00.000Z"
+    "pagesUsing": [
+      "/us/en",
+      "/us/en/adventures",
+      "/us/en/magazine"
+    ],
+    "reuseCount": 4,
+    "lastUsed": "2026-08-28T18:20:00.000Z"
   }
 }
