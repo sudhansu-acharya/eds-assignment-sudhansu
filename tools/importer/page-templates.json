@@ -243,7 +243,9 @@
           "selector": ".carousel.panelcontainer.cmp-carousel--mini",
           "style": null,
           "blocks": [],
-          "defaultContent": ["img"]
+          "defaultContent": [
+            "img"
+          ]
         },
         {
           "id": "section-2",
@@ -251,14 +253,18 @@
           "selector": ".title.cmp-title--underline",
           "style": null,
           "blocks": [],
-          "defaultContent": ["h1"]
+          "defaultContent": [
+            "h1"
+          ]
         },
         {
           "id": "section-3",
           "name": "Trip details facts panel",
           "selector": ".contentfragment.cmp-contentfragment--elements",
           "style": null,
-          "blocks": ["table-facts"],
+          "blocks": [
+            "table-facts"
+          ],
           "defaultContent": []
         },
         {
@@ -266,8 +272,72 @@
           "name": "Tabbed trip content",
           "selector": ".tabs.panelcontainer",
           "style": null,
-          "blocks": ["tabs-adventure"],
+          "blocks": [
+            "tabs-adventure"
+          ],
           "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "about-us",
+      "urls": [
+        "https://www.wknd.site/us/en/about-us.html",
+        "https://www.wknd.site/ca/en/about-us.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en/about-us.html",
+      "description": "WKND About Us content page",
+      "urlPattern": "/us/en/*",
+      "blocks": [
+        {
+          "name": "cards-team",
+          "instances": [
+            ".experiencefragment.cmp-experience-fragment--contributor"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "About Us content",
+          "selector": "main.cmp-layout-container--fixed",
+          "style": null,
+          "blocks": [
+            "cards-team"
+          ],
+          "defaultContent": [
+            "h1",
+            "h2",
+            "p"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "faqs",
+      "urls": [
+        "https://www.wknd.site/us/en/faqs.html",
+        "https://www.wknd.site/ca/en/faqs.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en/faqs.html",
+      "description": "WKND FAQs page",
+      "urlPattern": "/us/en/*",
+      "blocks": [
+        {
+          "name": "accordion-faq",
+          "instances": [
+            ".accordion.panelcontainer"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "FAQs content",
+          "selector": "main.cmp-layout-container--fixed",
+          "style": null,
+          "blocks": ["accordion-faq"],
+          "defaultContent": ["h1", "p"]
         }
       ]
     }
