@@ -1,27 +1,101 @@
-.cards-article > ul {
-  list-style: none;
+/* cards-article — WKND "image list" article cards (source .image-list.list) */
+
+.cards-article ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px 28px;
   margin: 0;
   padding: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(257px, 1fr));
-  gap: 24px;
+  list-style: none;
 }
 
-.cards-article > ul > li {
-  border: 1px solid #dadada;
-  background-color: var(--background-color);
+@media (width >= 600px) {
+  .cards-article ul {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.cards-article .cards-article-card-body {
-  margin: 16px;
+@media (width >= 900px) {
+  .cards-article ul {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
+.cards-article ul > li {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+
+/* image cell — rendered 260x200 => aspect-ratio 13/10, cover */
 .cards-article .cards-article-card-image {
   line-height: 0;
 }
 
-.cards-article > ul > li img {
+.cards-article .cards-article-card-image img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 13 / 10;
   object-fit: cover;
+  border-radius: 0;
+  display: block;
+}
+
+/* body cell */
+.cards-article .cards-article-card-body {
+  margin: 0;
+}
+
+/* title — Source Sans Pro 18px/27px weight 600 uppercase, dark */
+.cards-article .cards-article-card-body h1,
+.cards-article .cards-article-card-body h2,
+.cards-article .cards-article-card-body h3,
+.cards-article .cards-article-card-body h4,
+.cards-article .cards-article-card-body h5,
+.cards-article .cards-article-card-body h6 {
+  margin: 0;
+  padding: 0;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 27px;
+  text-transform: uppercase;
+  color: var(--text-color);
+  text-align: left;
+}
+
+.cards-article .cards-article-card-body h1 a:any-link,
+.cards-article .cards-article-card-body h2 a:any-link,
+.cards-article .cards-article-card-body h3 a:any-link,
+.cards-article .cards-article-card-body h4 a:any-link,
+.cards-article .cards-article-card-body h5 a:any-link,
+.cards-article .cards-article-card-body h6 a:any-link {
+  color: inherit;
+  font: inherit;
+  text-transform: inherit;
+  text-decoration: none;
+}
+
+.cards-article .cards-article-card-body h1 a:hover,
+.cards-article .cards-article-card-body h2 a:hover,
+.cards-article .cards-article-card-body h3 a:hover,
+.cards-article .cards-article-card-body h4 a:hover,
+.cards-article .cards-article-card-body h5 a:hover,
+.cards-article .cards-article-card-body h6 a:hover {
+  color: var(--link-color);
+  text-decoration: none;
+}
+
+/* description — Source Sans Pro 14px/21px, grey, 16px top gap */
+.cards-article .cards-article-card-body p {
+  margin: 16px 0 0;
+  padding: 0;
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 21px;
+  color: rgb(105 105 105);
+  text-align: left;
 }

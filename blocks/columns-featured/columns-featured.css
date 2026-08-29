@@ -1,33 +1,109 @@
+/* Block: columns-featured
+ * Featured-article callout migrated from WKND (.teaser.cmp-teaser--featured).
+ * Image beside a grey text panel (eyebrow + Asar heading + description + yellow CTA).
+ * Values extracted from source computed styles — see migration-work/columns-featured-extracted.css
+ */
+
+/* --- Row layout: mobile-first, stacked (text on top, image below) --- */
 .columns-featured > div {
   display: flex;
   flex-direction: column;
 }
 
 .columns-featured img {
+  display: block;
   width: 100%;
 }
 
-.columns-featured > div > div {
-  order: 1;
+/* --- Grey text panel (source: rgb(235, 235, 235), padding 63px 36px 36px) --- */
+.columns-featured .columns-featured-content {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: 36px;
+  background-color: rgb(235 235 235);
+  color: var(--text-color);
+  text-align: left;
 }
 
-.columns-featured > div > .columns-featured-img-col {
-  order: 0;
+/* Description — Source Sans Pro 14px/400, line-height 24.5px */
+.columns-featured .columns-featured-content h2 + p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 400;
+  line-height: 1.75;
+  color: var(--text-color);
 }
 
-.columns-featured > div > .columns-featured-img-col img {
-  display: block;
+/* Eyebrow — "Featured Article" (Source Sans Pro 18px/700) */
+.columns-featured .columns-featured-content > p:first-child {
+  margin: 0 0 13.5px;
+  font-family: var(--body-font-family);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  color: var(--text-color);
 }
 
+/* Heading — Asar 36px/400, line-height 54px */
+.columns-featured .columns-featured-content h2 {
+  margin: 0 0 18px;
+  font-family: var(--heading-font-family);
+  font-size: var(--heading-font-size-xl);
+  font-weight: 400;
+  line-height: 1.5;
+  color: var(--text-color);
+}
+
+/* CTA wrapper spacing */
+.columns-featured .columns-featured-content > p:last-child {
+  margin: 24px 0 0;
+}
+
+/* Yellow WKND CTA button — bg #ffea00, #202020 text, uppercase 14px/600.
+ * The plain "Read More" link is not auto-buttonized (no strong/em), so we
+ * override the global link styling here. */
+.columns-featured .columns-featured-content > p:last-child a:any-link {
+  display: inline-block;
+  padding: 14px 35px;
+  border: 0;
+  border-radius: 0;
+  background-color: rgb(255 234 0);
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: var(--body-font-size-xs);
+  font-weight: 600;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+
+.columns-featured .columns-featured-content > p:last-child a:any-link:hover,
+.columns-featured .columns-featured-content > p:last-child a:any-link:focus-visible {
+  background-color: rgb(230 211 0);
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+/* --- Desktop: image left (~62.5%), grey text panel right (~37.5%) --- */
 @media (width >= 900px) {
   .columns-featured > div {
-    align-items: center;
-    flex-direction: unset;
-    gap: 24px;
+    flex-direction: row-reverse;
+    align-items: stretch;
   }
 
-  .columns-featured > div > div {
-    flex: 1;
-    order: unset;
+  .columns-featured .columns-featured-content {
+    flex: 0 0 37.5%;
+    padding: 63px 36px 36px;
+  }
+
+  .columns-featured > div > .columns-featured-img-col {
+    flex: 0 0 62.5%;
+  }
+
+  .columns-featured .columns-featured-img-col img {
+    height: 100%;
+    object-fit: cover;
   }
 }
