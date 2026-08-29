@@ -1,47 +1,93 @@
+/* Full-bleed: image + content span the section width */
 .hero-banner-container .hero-banner-wrapper {
   max-width: unset;
   padding: 0;
 }
 
 .hero-banner {
+  padding: 0;
+}
+
+/* Image row (top) — full width, object-fit cover */
+.hero-banner picture {
+  display: block;
+  line-height: 0;
+}
+
+.hero-banner > div:first-child img {
+  display: block;
+  width: 100%;
+  height: 300px;
+  object-fit: cover;
+}
+
+/* Content box (below the image), white background, dark text, left aligned */
+.hero-banner > div:last-child {
   position: relative;
-  padding: 40px 24px;
-  min-height: 300px;
+  z-index: 1;
+  margin: 0 24px;
+  padding: 24px;
+  background-color: var(--background-color);
+  text-align: left;
 }
 
-.hero-banner h1,
-.hero-banner h2,
-.hero-banner h3,
-.hero-banner h4,
-.hero-banner h5,
-.hero-banner h6,
-.hero-banner p {
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
-  color: var(--background-color);
-}
-
-.hero-banner.no-image * {
+.hero-banner h2 {
+  margin: 0 0 0.25em;
+  font-family: var(--heading-font-family);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1.5;
   color: var(--text-color);
 }
 
-.hero-banner picture {
-  position: absolute;
-  z-index: -1;
-  inset: 0;
-  object-fit: cover;
-  box-sizing: border-box;
+.hero-banner p {
+  margin: 0 0 18px;
+  font-size: 18px;
+  line-height: 1.75;
+  color: var(--text-color);
 }
 
-.hero-banner img {
-  object-fit: cover;
-  width: 100%;
-  height: 100%;
+.hero-banner p:last-child {
+  margin-bottom: 0;
+}
+
+/* CTA — solid yellow button (overrides the site-wide text-link reset) */
+main .hero-banner a,
+main .hero-banner a:any-link {
+  display: inline-block;
+  margin: 0;
+  border: none;
+  border-radius: 0;
+  padding: 14px 35px;
+  background-color: #ffea00;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+main .hero-banner a:hover,
+main .hero-banner a:focus-visible {
+  background-color: #ffea00;
+  color: var(--text-color);
+  text-decoration: none;
 }
 
 @media (width >= 900px) {
-  .hero-banner {
-    padding: 40px 32px;
+  .hero-banner > div:first-child img {
+    height: 640px;
+  }
+
+  .hero-banner:not(.no-image) > div:last-child {
+    max-width: 1192px;
+    margin: -180px auto 0;
+    padding: 0 28px 28px;
+  }
+
+  .hero-banner:not(.no-image) h2 {
+    margin-top: 18px;
   }
 }
