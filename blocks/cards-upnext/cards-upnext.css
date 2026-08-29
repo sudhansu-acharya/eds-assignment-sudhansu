@@ -1,0 +1,64 @@
+/*
+ * cards-upnext - text-only "Up Next" related-articles list for magazine article pages.
+ * Derived from the vanilla cards block, adapted to a single-column, image-less
+ * stacked list of article title + publication date links (sidebar treatment).
+ */
+
+.cards-upnext > ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.cards-upnext > ul > li {
+  border: 0;
+  border-top: 1px solid #dadada;
+  background-color: transparent;
+}
+
+.cards-upnext > ul > li:last-child {
+  border-bottom: 1px solid #dadada;
+}
+
+.cards-upnext .cards-upnext-card-body {
+  margin: 0;
+  padding: 16px 0;
+}
+
+.cards-upnext .cards-upnext-card-body a {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.cards-upnext .cards-upnext-card-body a:hover {
+  text-decoration: underline;
+}
+
+/* Article title */
+.cards-upnext .cards-upnext-card-body p:first-child,
+.cards-upnext .cards-upnext-card-body h5,
+.cards-upnext .cards-upnext-card-body h4 {
+  margin: 0 0 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Publication date */
+.cards-upnext .cards-upnext-card-body p:last-child {
+  margin: 0;
+  font-size: var(--body-font-size-xs, 0.75rem);
+  color: #707070;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* image cell retained for structural parity with the vanilla cards block,
+   but the up-next list is text-only, so images are hidden if present */
+.cards-upnext .cards-upnext-card-image {
+  display: none;
+}

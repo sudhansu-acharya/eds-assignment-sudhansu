@@ -9,15 +9,29 @@
  * Removes non-authorable site chrome (header experience fragment, footer
  * experience fragment incl. footer nav, mobile navigation, Adobe ID tracking
  * iframe), leftover empty <meta> tags, decorative separators, and the AEM Tabs
- * chrome (tab button list + inactive tab panels — adventures only) so the import
- * contains only page-level authorable content.
+ * chrome (tab button list + inactive category-filter tab panels — adventures
+ * listing only) so the import contains only page-level authorable content.
  *
- * Tab-panel note (adventures): the cards live inside the ACTIVE tab panel
- * (.cmp-tabs__tabpanel--active) and the cards-article parser scopes to it, so
- * NOTHING that touches tab panels runs in beforeTransform. Inactive tab panels
- * (duplicate, category-filtered copies of the same cards) and the tab button
- * list are removed only in afterTransform — after the parser has extracted the
- * active panel's image-list into a block. The magazine page has no tabs, so
+ * Tab-panel note — PAGE-AWARE (adventures listing vs adventure-detail):
+ * There are two very different .tabs.panelcontainer shapes on WKND, and the
+ * inactive-panel cleanup must only ever touch the FIRST one:
+ *   1. adventures LISTING: the cards live inside the ACTIVE tab panel
+ *      (.cmp-tabs__tabpanel--active) and the cards-article parser scopes to it
+ *      via `.cmp-tabs__tabpanel--active .image-list.list`, replacing only the
+ *      image-list. The tabs container + its inactive panels SURVIVE parsing;
+ *      the inactive panels are duplicate, category-filtered copies of the same
+ *      adventure cards (each contains its own .image-list) and are non-authorable.
+ *   2. adventure-detail: the tabs-adventure parser's instance selector IS the
+ *      whole `.tabs.panelcontainer`, and it needs ALL panels (Overview /
+ *      Itinerary / What to Bring are real content). It replaces the entire
+ *      container with a block during parsing, so by afterTransform there are
+ *      normally no panels left to touch here at all.
+ * To keep this safe regardless of parser ordering/changes, the inactive-panel
+ * removal is SCOPED: an inactive .cmp-tabs__tabpanel is removed ONLY when it
+ * contains an `.image-list` (the listing's duplicate card filters). The
+ * adventure-detail content panels have no .image-list, so they are never
+ * removed — the tabs-adventure parser always receives all panels. NOTHING that
+ * touches tab panels runs in beforeTransform. The magazine page has no tabs, so
  * these selectors simply match nothing there.
  *
  * Magazine note: this cleanup deliberately does NOT remove the "Members Only"
@@ -54,19 +68,32 @@ export default function transform(hookName, element, payload) {
     //   .cmp-separator wraps a bare <hr class="cmp-separator__horizontal-rule"> (lines 728-731).
     //   Target the wrapper, never bare `hr`, so the section transformer's inserted <hr> breaks survive.
     // AEM Tabs chrome (adventures listing):
-    //   .cmp-tabs__tablist — tab buttons "All/Climbing/…" (lines 202-209), non-authorable UI.
-    //   .cmp-tabs__tabpanel:not(.cmp-tabs__tabpanel--active) — inactive panels (lines 456,492,543,594,630…)
-    //     hold duplicate category-filtered copies of the same adventure cards; the active panel is preserved.
+    //   .cmp-tabs__tablist — tab buttons "All/Climbing/…", non-authorable UI. Safe
+    //     to remove on both templates: the tabs-adventure parser has already read the
+    //     labels into the block, and the adventures cards-article parser doesn't use it.
     // Leftover empty <meta> tag inside a cmp-image block (line 187) and any stray iframe/noscript.
     WebImporter.DOMUtils.remove(element, [
       'header.cmp-experiencefragment--header',
       'footer.cmp-experiencefragment--footer',
       '.cmp-separator',
       '.cmp-tabs__tablist',
-      '.cmp-tabs__tabpanel:not(.cmp-tabs__tabpanel--active)',
       'iframe',
       'noscript',
       'meta',
     ]);
+
+    // Inactive tab panels — PAGE-AWARE removal (see header note). Remove an
+    // inactive .cmp-tabs__tabpanel ONLY when it holds an .image-list: those are
+    // the adventures-listing duplicate, category-filtered copies of the same
+    // cards (the active panel was already parsed into cards-article). The
+    // adventure-detail content panels (Overview/Itinerary/What to Bring) contain
+    // no .image-list, so they are preserved for the tabs-adventure parser — and
+    // in practice that parser has already replaced the whole container by now.
+    const inactivePanels = element.querySelectorAll(
+      '.cmp-tabs__tabpanel:not(.cmp-tabs__tabpanel--active)',
+    );
+    inactivePanels.forEach((panel) => {
+      if (panel.querySelector('.image-list')) panel.remove();
+    });
   }
 }

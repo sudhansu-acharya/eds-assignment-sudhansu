@@ -1,12 +1,10 @@
 {
-  "metadata": {
-    "projectType": "da"
-  },
   "templates": [
     {
       "name": "adventures",
       "urls": [
-        "https://www.wknd.site/us/en/adventures.html"
+        "https://www.wknd.site/us/en/adventures.html",
+        "https://www.wknd.site/ca/en/magazine/members-only.html"
       ],
       "representativeUrl": "https://www.wknd.site/us/en/adventures.html",
       "description": "WKND adventures listing page - hero teaser and adventure cards grid",
@@ -32,14 +30,18 @@
           "selector": "main.cmp-layout-container--fixed:nth-of-type(1)",
           "style": null,
           "blocks": [],
-          "defaultContent": ["h1"]
+          "defaultContent": [
+            "h1"
+          ]
         },
         {
           "id": "section-2",
           "name": "Adventures teaser hero",
           "selector": ".teaser.cmp-teaser--hero",
           "style": null,
-          "blocks": ["hero-banner"],
+          "blocks": [
+            "hero-banner"
+          ],
           "defaultContent": []
         },
         {
@@ -47,7 +49,9 @@
           "name": "Current Adventures listing",
           "selector": ".tabs.panelcontainer",
           "style": null,
-          "blocks": ["cards-article"],
+          "blocks": [
+            "cards-article"
+          ],
           "defaultContent": []
         }
       ]
@@ -82,14 +86,18 @@
           "selector": "main.cmp-layout-container--fixed:nth-of-type(1)",
           "style": null,
           "blocks": [],
-          "defaultContent": ["h1"]
+          "defaultContent": [
+            "h1"
+          ]
         },
         {
           "id": "section-2",
           "name": "Featured article teaser",
           "selector": ".teaser.cmp-teaser--featured",
           "style": "highlight",
-          "blocks": ["columns-featured"],
+          "blocks": [
+            "columns-featured"
+          ],
           "defaultContent": []
         },
         {
@@ -97,7 +105,9 @@
           "name": "All articles grid",
           "selector": ".image-list.list",
           "style": null,
-          "blocks": ["cards-article"],
+          "blocks": [
+            "cards-article"
+          ],
           "defaultContent": []
         },
         {
@@ -105,7 +115,158 @@
           "name": "Members Only teasers",
           "selector": ".teaser.cmp-teaser--secure",
           "style": null,
-          "blocks": ["cards-article"],
+          "blocks": [
+            "cards-article"
+          ],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "magazine-article",
+      "urls": [
+        "https://www.wknd.site/us/en/magazine/arctic-surfing.html",
+        "https://www.wknd.site/us/en/magazine/guide-la-skateparks.html",
+        "https://www.wknd.site/us/en/magazine/san-diego-surf.html",
+        "https://www.wknd.site/us/en/magazine/ski-touring.html",
+        "https://www.wknd.site/us/en/magazine/western-australia.html",
+        "https://www.wknd.site/ca/en/magazine/arctic-surfing.html",
+        "https://www.wknd.site/ca/en/magazine/guide-la-skateparks.html",
+        "https://www.wknd.site/ca/en/magazine/san-diego-surf.html",
+        "https://www.wknd.site/ca/en/magazine/ski-touring.html",
+        "https://www.wknd.site/ca/en/magazine/western-australia.html",
+        "https://www.wknd.site/ca/en/magazine/members-only/alaskan-adventure.html",
+        "https://www.wknd.site/ca/en/magazine/members-only/fly-fishing-the-amazon.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en/magazine/arctic-surfing.html",
+      "description": "WKND magazine article detail page",
+      "urlPattern": "/us/en/magazine/*",
+      "blocks": [
+        {
+          "name": "cards-upnext",
+          "instances": [
+            ".cmp-list--upnext"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Lead image",
+          "selector": "main.cmp-layout-container--fixed:nth-of-type(1)",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "img"
+          ]
+        },
+        {
+          "id": "section-2",
+          "name": "Article header and body",
+          "selector": "main.aem-GridColumn--default--8",
+          "style": null,
+          "blocks": [],
+          "defaultContent": [
+            "h1",
+            "p"
+          ]
+        },
+        {
+          "id": "section-3",
+          "name": "Related articles (Up Next)",
+          "selector": ".cmp-list--upnext",
+          "style": null,
+          "blocks": [
+            "cards-upnext"
+          ],
+          "defaultContent": []
+        }
+      ]
+    },
+    {
+      "name": "adventure-detail",
+      "urls": [
+        "https://www.wknd.site/us/en/adventures/bali-surf-camp.html",
+        "https://www.wknd.site/us/en/adventures/beervana-portland.html",
+        "https://www.wknd.site/us/en/adventures/climbing-new-zealand.html",
+        "https://www.wknd.site/us/en/adventures/colorado-rock-climbing.html",
+        "https://www.wknd.site/us/en/adventures/cycling-southern-utah.html",
+        "https://www.wknd.site/us/en/adventures/cycling-tuscany.html",
+        "https://www.wknd.site/us/en/adventures/downhill-skiing-wyoming.html",
+        "https://www.wknd.site/us/en/adventures/gastronomic-marais-tour.html",
+        "https://www.wknd.site/us/en/adventures/napa-wine-tasting.html",
+        "https://www.wknd.site/us/en/adventures/riverside-camping-australia.html",
+        "https://www.wknd.site/us/en/adventures/ski-touring-mont-blanc.html",
+        "https://www.wknd.site/us/en/adventures/surf-camp-costa-rica.html",
+        "https://www.wknd.site/us/en/adventures/tahoe-skiing.html",
+        "https://www.wknd.site/us/en/adventures/west-coast-cycling.html",
+        "https://www.wknd.site/us/en/adventures/whistler-mountain-biking.html",
+        "https://www.wknd.site/us/en/adventures/yosemite-backpacking.html",
+        "https://www.wknd.site/ca/en/adventures/bali-surf-camp.html",
+        "https://www.wknd.site/ca/en/adventures/beervana-portland.html",
+        "https://www.wknd.site/ca/en/adventures/climbing-new-zealand.html",
+        "https://www.wknd.site/ca/en/adventures/colorado-rock-climbing.html",
+        "https://www.wknd.site/ca/en/adventures/cycling-southern-utah.html",
+        "https://www.wknd.site/ca/en/adventures/cycling-tuscany.html",
+        "https://www.wknd.site/ca/en/adventures/downhill-skiing-wyoming.html",
+        "https://www.wknd.site/ca/en/adventures/gastronomic-marais-tour.html",
+        "https://www.wknd.site/ca/en/adventures/napa-wine-tasting.html",
+        "https://www.wknd.site/ca/en/adventures/riverside-camping-australia.html",
+        "https://www.wknd.site/ca/en/adventures/ski-touring-mont-blanc.html",
+        "https://www.wknd.site/ca/en/adventures/surf-camp-costa-rica.html",
+        "https://www.wknd.site/ca/en/adventures/tahoe-skiing.html",
+        "https://www.wknd.site/ca/en/adventures/west-coast-cycling.html",
+        "https://www.wknd.site/ca/en/adventures/whistler-mountain-biking.html",
+        "https://www.wknd.site/ca/en/adventures/yosemite-backpacking.html"
+      ],
+      "representativeUrl": "https://www.wknd.site/us/en/adventures/bali-surf-camp.html",
+      "description": "WKND adventure detail page (individual trip)",
+      "urlPattern": "/us/en/adventures/*",
+      "blocks": [
+        {
+          "name": "table-facts",
+          "instances": [
+            ".contentfragment.cmp-contentfragment--elements"
+          ]
+        },
+        {
+          "name": "tabs-adventure",
+          "instances": [
+            ".tabs.panelcontainer"
+          ]
+        }
+      ],
+      "sections": [
+        {
+          "id": "section-1",
+          "name": "Lead image",
+          "selector": ".carousel.panelcontainer.cmp-carousel--mini",
+          "style": null,
+          "blocks": [],
+          "defaultContent": ["img"]
+        },
+        {
+          "id": "section-2",
+          "name": "Trip title",
+          "selector": ".title.cmp-title--underline",
+          "style": null,
+          "blocks": [],
+          "defaultContent": ["h1"]
+        },
+        {
+          "id": "section-3",
+          "name": "Trip details facts panel",
+          "selector": ".contentfragment.cmp-contentfragment--elements",
+          "style": null,
+          "blocks": ["table-facts"],
+          "defaultContent": []
+        },
+        {
+          "id": "section-4",
+          "name": "Tabbed trip content",
+          "selector": ".tabs.panelcontainer",
+          "style": null,
+          "blocks": ["tabs-adventure"],
           "defaultContent": []
         }
       ]

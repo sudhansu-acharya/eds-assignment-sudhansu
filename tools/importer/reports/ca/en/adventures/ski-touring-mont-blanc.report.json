@@ -1,0 +1,12 @@
+{
+  "status": "success",
+  "url": "https://www.wknd.site/ca/en/adventures/ski-touring-mont-blanc.html",
+  "path": "ca/en/adventures/ski-touring-mont-blanc",
+  "timestamp": "2026-08-29T12:03:10.340Z",
+  "title": "Ski Touring Mont Blanc",
+  "template": "adventure-detail",
+  "blocks": [
+    "table-facts",
+    "tabs-adventure"
+  ]
+}

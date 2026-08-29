@@ -1,0 +1,11 @@
+{
+  "status": "success",
+  "url": "https://www.wknd.site/ca/en/magazine/members-only/fly-fishing-the-amazon.html",
+  "path": "ca/en/magazine/members-only/fly-fishing-the-amazon",
+  "timestamp": "2026-08-29T11:38:20.248Z",
+  "title": "Fly Fishing the Amazon",
+  "template": "magazine-article",
+  "blocks": [
+    "cards-upnext"
+  ]
+}
