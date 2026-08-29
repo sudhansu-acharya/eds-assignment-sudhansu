@@ -40,6 +40,20 @@
  * is stripped (afterTransform, after the section transformer has placed its own
  * section break), and the featured teaser + secured teasers are left intact for
  * the columns-featured / cards-article parsers to consume.
+ *
+ * FAQs note — accordion panels MUST survive: the FAQs page is a single
+ * .accordion.panelcontainer whose 7 answer panels are collapsed in the DOM
+ * (.cmp-accordion__panel--hidden). The accordion-faq parser needs ALL panels
+ * (each holds one answer). This cleanup must therefore NEVER remove
+ * .cmp-accordion, .cmp-accordion__panel, or hidden accordion panels:
+ *   - the inactive-panel removal below is SCOPED to .cmp-tabs__tabpanel only
+ *     (tab chrome), so it never matches accordion panels;
+ *   - do not add .cmp-accordion / hidden-panel selectors to the remove()
+ *     lists, or FAQ answers would be lost before parsing.
+ * The FAQs page authorable content that must be preserved: the H1 "FAQs", the
+ * intro image + paragraph, the accordion, and the "Need more help?" heading +
+ * contact paragraph. Only the decorative .separator above "Need more help?" is
+ * stripped by the existing .cmp-separator rule (a bare wrapper, no content).
  */
 
 const TransformHook = {
