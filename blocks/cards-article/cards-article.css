@@ -21,6 +21,20 @@
   }
 }
 
+/*
+ * Members Only secured teasers: the parser groups the two .cmp-teaser--secure
+ * cards into ONE cards-article block, so its <ul> holds exactly two <li>. Lay
+ * that pair out 2-up (side-by-side) at all breakpoints instead of inheriting
+ * the 4-up "All Articles" grid. The :has(...) matches only a list whose 2nd
+ * child is also its last child (exactly two cards), so the 5-card All Articles
+ * grid and other multi-card lists are unaffected.
+ */
+@media (width >= 600px) {
+  .cards-article ul:has(> li:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .cards-article ul > li {
   margin: 0;
   padding: 0;
@@ -48,7 +62,7 @@
   margin: 0;
 }
 
-/* title — Source Sans Pro 18px/27px weight 600 uppercase, dark */
+/* title — Source Sans Pro 18px/27px weight 400, blue link, normal case */
 .cards-article .cards-article-card-body h1,
 .cards-article .cards-article-card-body h2,
 .cards-article .cards-article-card-body h3,
@@ -59,10 +73,10 @@
   padding: 0;
   font-family: var(--body-font-family);
   font-size: 18px;
-  font-weight: 600;
+  font-weight: 400;
   line-height: 27px;
-  text-transform: uppercase;
-  color: var(--text-color);
+  text-transform: none;
+  color: var(--link-color);
   text-align: left;
 }
 
