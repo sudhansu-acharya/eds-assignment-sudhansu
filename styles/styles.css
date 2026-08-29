@@ -44,8 +44,8 @@
 
 @media (width >= 900px) {
   :root {
-    /* heading sizes (desktop) */
-    --heading-font-size-xxl: 54px;
+    /* heading sizes (desktop) — page-title H1 is 40px on WKND */
+    --heading-font-size-xxl: 40px;
     --heading-font-size-xl: 36px;
     --heading-font-size-l: 24px;
     --heading-font-size-m: 20px;

@@ -93,9 +93,9 @@ main .section.cards-team-container > .cards-team-wrapper {
    labels laid out in a centered horizontal row. */
 .cards-team .cards-team-card-body p:last-of-type {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
-  gap: 4px;
+  gap: 0;
   margin: 4px 0 0;
 }
 
@@ -103,9 +103,10 @@ main .section.cards-team-container > .cards-team-wrapper {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 48px;
-  height: 40px;
-  padding: 0 10px;
+  width: 48px;
+  height: 48px;
+  padding: 0;
+  overflow: hidden;
   background-color: var(--text-color);
   color: var(--background-color);
   font-size: var(--body-font-size-xs);
