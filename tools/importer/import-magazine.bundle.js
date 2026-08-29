@@ -58,16 +58,12 @@ var CustomImportScript = (() => {
   }
 
   // tools/importer/parsers/cards-article.js
-  function buildCardRow(root, document2) {
-    const image = root.querySelector(
-      ".cmp-image-list__item-image img, .cmp-teaser__image img, img"
-    );
+  function buildImageListCard(root, document2) {
+    const image = root.querySelector(".cmp-image-list__item-image img, img");
     const contentCell = [];
-    const titleEl = root.querySelector(
-      ".cmp-image-list__item-title, .cmp-teaser__title"
-    );
+    const titleEl = root.querySelector(".cmp-image-list__item-title");
     const linkEl = root.querySelector(
-      ".cmp-image-list__item-title-link, .cmp-image-list__item-image-link, .cmp-teaser__action-link"
+      ".cmp-image-list__item-title-link, .cmp-image-list__item-image-link"
     );
     const href = linkEl && linkEl.getAttribute("href");
     if (titleEl) {
@@ -83,9 +79,7 @@ var CustomImportScript = (() => {
       }
       contentCell.push(heading);
     }
-    const description = root.querySelector(
-      ".cmp-image-list__item-description, .cmp-teaser__description"
-    );
+    const description = root.querySelector(".cmp-image-list__item-description");
     if (description) {
       const p = document2.createElement("p");
       p.textContent = description.textContent.trim();
@@ -94,25 +88,79 @@ var CustomImportScript = (() => {
     if (!image && !contentCell.length) return null;
     return [image || "", contentCell];
   }
+  function buildSecureTeaserCard(root, document2) {
+    const image = root.querySelector(".cmp-teaser__image img, img");
+    const contentCell = [];
+    const titleEl = root.querySelector(".cmp-teaser__title");
+    if (titleEl) {
+      const heading = document2.createElement("h3");
+      heading.textContent = titleEl.textContent.trim();
+      contentCell.push(heading);
+    }
+    const description = root.querySelector(".cmp-teaser__description");
+    if (description) {
+      const descText = description.textContent.trim();
+      if (descText) {
+        const p = document2.createElement("p");
+        p.textContent = descText;
+        contentCell.push(p);
+      }
+    }
+    const actionLink = root.querySelector(".cmp-teaser__action-link");
+    const actionHref = actionLink && actionLink.getAttribute("href");
+    const actionContainer = root.querySelector(".cmp-teaser__action-container");
+    const ctaText = actionLink && actionLink.textContent.trim() || actionContainer && actionContainer.textContent.trim() || "";
+    if (ctaText) {
+      const p = document2.createElement("p");
+      if (actionHref) {
+        const link = document2.createElement("a");
+        link.href = actionHref;
+        link.textContent = ctaText;
+        p.append(link);
+      } else {
+        p.textContent = ctaText;
+      }
+      contentCell.push(p);
+    }
+    if (!image && !contentCell.length) return null;
+    return [contentCell, image || ""];
+  }
   function parse2(element, { document: document2 }) {
-    const cells = [];
     const listItems = Array.from(element.querySelectorAll(".cmp-image-list__item"));
     if (listItems.length) {
+      const cells2 = [];
       listItems.forEach((item) => {
-        const row = buildCardRow(item, document2);
-        if (row) cells.push(row);
+        const row = buildImageListCard(item, document2);
+        if (row) cells2.push(row);
       });
-    } else {
-      const root = element.querySelector(".cmp-teaser") || element;
-      const row = buildCardRow(root, document2);
-      if (row) cells.push(row);
+      if (!cells2.length) {
+        element.replaceWith(...element.childNodes);
+        return;
+      }
+      const block2 = WebImporter.Blocks.createBlock(document2, { name: "cards-article", cells: cells2 });
+      element.replaceWith(block2);
+      return;
     }
+    const parent = element.parentNode;
+    const secureTeasers = parent ? Array.from(parent.children).filter(
+      (el) => el.matches && el.matches(".teaser.cmp-teaser--secure")
+    ) : [];
+    const group = secureTeasers.length ? secureTeasers : [element];
+    const cells = [];
+    group.forEach((teaser) => {
+      const root = teaser.querySelector(".cmp-teaser") || teaser;
+      const row = buildSecureTeaserCard(root, document2);
+      if (row) cells.push(row);
+    });
     if (!cells.length) {
       element.replaceWith(...element.childNodes);
       return;
     }
     const block = WebImporter.Blocks.createBlock(document2, { name: "cards-article", cells });
-    element.replaceWith(block);
+    group[0].replaceWith(block);
+    group.slice(1).forEach((teaser) => {
+      if (teaser.parentNode) teaser.remove();
+    });
   }
 
   // tools/importer/transformers/wknd-cleanup.js
@@ -134,11 +182,16 @@ var CustomImportScript = (() => {
         "footer.cmp-experiencefragment--footer",
         ".cmp-separator",
         ".cmp-tabs__tablist",
-        ".cmp-tabs__tabpanel:not(.cmp-tabs__tabpanel--active)",
         "iframe",
         "noscript",
         "meta"
       ]);
+      const inactivePanels = element.querySelectorAll(
+        ".cmp-tabs__tabpanel:not(.cmp-tabs__tabpanel--active)"
+      );
+      inactivePanels.forEach((panel) => {
+        if (panel.querySelector(".image-list")) panel.remove();
+      });
     }
   }
 
