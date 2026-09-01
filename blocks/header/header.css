@@ -79,9 +79,8 @@ header nav .nav-brand img {
   object-fit: contain;
 }
 
-/* nav sections — hidden on mobile until hamburger opens.
-   Full-bleed edge-to-edge: cancel the nav's 16px side padding so items
-   span the full viewport width for large tap targets. */
+/* nav sections — flat list. Hidden on mobile until hamburger opens;
+   full-bleed edge-to-edge so items span the viewport for large tap targets. */
 header nav .nav-sections {
   grid-area: sections;
   display: none;
@@ -91,15 +90,7 @@ header nav .nav-sections {
   padding: 0;
 }
 
-header nav .nav-sections ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
 header nav.is-open .nav-sections { display: block; }
-
-header nav .nav-sections > li > ul { padding: 8px 0; }
 
 header nav .nav-sections li { padding: 0; }
 
@@ -139,10 +130,9 @@ header nav .nav-tools a:hover {
   color: var(--link-color);
 }
 
-/* WKND's top-level "Home" is a structural parent; its children are the real nav.
-   Hide the parent label and promote the child list. */
+/* WKND hides "Home" (the first item) in the top nav — the WKND logo is Home. */
 /* stylelint-disable-next-line no-descending-specificity */
-header nav .nav-sections > li > a { display: none; }
+header nav .nav-sections > li:first-child { display: none; }
 
 /* desktop */
 @media (width >= 900px) {
@@ -160,18 +150,14 @@ header nav .nav-sections > li > a { display: none; }
     height: 48px;
   }
 
-  /* flat horizontal nav — always visible on desktop; reset mobile full-bleed */
+  /* flat horizontal nav — single row, always visible on desktop; reset mobile full-bleed */
   header nav .nav-sections {
-    display: block;
-    justify-self: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
     width: auto;
     margin: 0;
-  }
-
-  header nav .nav-sections > li > ul {
-    display: flex;
-    gap: 12px;
-    padding: 0;
   }
 
   header nav .nav-sections a {
@@ -180,5 +166,6 @@ header nav .nav-sections > li > a { display: none; }
     padding: 15px 17px;
     font-size: 14px;
     font-weight: 400;
+    white-space: nowrap;
   }
 }
