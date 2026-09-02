@@ -81,7 +81,19 @@ export default async function decorate(block) {
   tools.className = 'nav-tools';
   if (toolsSection) tools.append(...toolsSection.childNodes);
 
-  nav.append(hamburger, brand, navLinks, tools);
+  // Search box — the source header has a search input on the right of the main
+  // row. Build it here (UI chrome, not nav data) as an accessible search field.
+  const search = document.createElement('div');
+  search.className = 'nav-search';
+  search.setAttribute('role', 'search');
+  const searchInput = document.createElement('input');
+  searchInput.type = 'search';
+  searchInput.className = 'nav-search-input';
+  searchInput.setAttribute('aria-label', 'Search');
+  searchInput.placeholder = 'Search';
+  search.append(searchInput);
+
+  nav.append(hamburger, brand, navLinks, tools, search);
 
   const wrapper = document.createElement('div');
   wrapper.className = 'nav-wrapper';

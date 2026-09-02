@@ -23,6 +23,11 @@ header nav {
   font-family: var(--body-font-family);
 }
 
+/* search — hidden on mobile (matches source: collapsed behind the menu) */
+header nav .nav-search {
+  display: none;
+}
+
 /* hamburger (mobile only) */
 header nav .nav-hamburger {
   grid-area: hamburger;
@@ -136,9 +141,15 @@ header nav .nav-sections > li:first-child { display: none; }
 
 /* desktop */
 @media (width >= 900px) {
+  /* two-row header (matches source): utility links (locale + sign in) span a
+     top row; the main row is logo | nav | search. */
   header nav {
-    grid-template: 'brand sections tools' var(--nav-height) / auto 1fr auto;
+    grid-template:
+      'tools tools tools' auto
+      'brand sections search' var(--nav-height) / auto 1fr auto;
     gap: 0 24px;
+    align-items: center;
+    padding-top: 6px;
   }
 
   header nav .nav-hamburger { display: none; }
@@ -148,6 +159,36 @@ header nav .nav-sections > li:first-child { display: none; }
   header nav .nav-brand img {
     width: 128px;
     height: 48px;
+  }
+
+  /* utility links row: right-aligned, small, above the logo/nav row */
+  header nav .nav-tools {
+    grid-area: tools;
+    justify-content: flex-end;
+  }
+
+  /* search — right-aligned input on the main row */
+  header nav .nav-search {
+    grid-area: search;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  header nav .nav-search .nav-search-input {
+    width: 180px;
+    box-sizing: border-box;
+    padding: 8px 12px;
+    border: 0;
+    border-bottom: 1px solid var(--text-color);
+    background: transparent;
+    color: var(--text-color);
+    font-family: var(--body-font-family);
+    font-size: 14px;
+  }
+
+  header nav .nav-search .nav-search-input::placeholder {
+    color: var(--text-color);
+    opacity: 0.6;
   }
 
   /* flat horizontal nav — single row, always visible on desktop; reset mobile full-bleed */
