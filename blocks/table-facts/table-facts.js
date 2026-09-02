@@ -1,32 +1,34 @@
 /*
- * Table Block
- * Recreate a table
- * https://www.hlx.live/developer/block-collection/table
+ * Table Facts Block
+ * A vertical label/value facts panel (trip details).
+ * Each authored row is a fact: cell 1 = label, cell 2 = value.
  */
 
 /**
- *
  * @param {Element} block
  */
 export default async function decorate(block) {
-  const table = document.createElement('table');
-  const thead = document.createElement('thead');
-  const tbody = document.createElement('tbody');
-  const header = !block.classList.contains('no-header');
+  const dl = document.createElement('dl');
 
-  [...block.children].forEach((row, i) => {
-    const tr = document.createElement('tr');
+  [...block.children].forEach((row) => {
+    const cells = [...row.children];
+    if (!cells.length) return;
 
-    [...row.children].forEach((cell) => {
-      const td = document.createElement(i === 0 && header ? 'th' : 'td');
+    const fact = document.createElement('div');
+    fact.className = 'table-facts-fact';
 
-      if (i === 0) td.setAttribute('scope', 'column');
-      td.innerHTML = cell.innerHTML;
-      tr.append(td);
-    });
-    if (i === 0 && header) thead.append(tr);
-    else tbody.append(tr);
+    const dt = document.createElement('dt');
+    dt.innerHTML = cells[0] ? cells[0].innerHTML : '';
+    fact.append(dt);
+
+    if (cells[1]) {
+      const dd = document.createElement('dd');
+      dd.innerHTML = cells[1].innerHTML;
+      fact.append(dd);
+    }
+
+    dl.append(fact);
   });
-  table.append(thead, tbody);
-  block.replaceChildren(table);
+
+  block.replaceChildren(dl);
 }

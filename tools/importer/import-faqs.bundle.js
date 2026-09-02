@@ -35,132 +35,41 @@ var CustomImportScript = (() => {
   };
   var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: true }), mod);
 
-  // tools/importer/import-magazine.js
-  var import_magazine_exports = {};
-  __export(import_magazine_exports, {
-    default: () => import_magazine_default
+  // tools/importer/import-faqs.js
+  var import_faqs_exports = {};
+  __export(import_faqs_exports, {
+    default: () => import_faqs_default
   });
 
-  // tools/importer/parsers/columns-featured.js
+  // tools/importer/parsers/accordion-faq.js
   function parse(element, { document: document2 }) {
-    const teaser = element.querySelector(".cmp-teaser") || element;
-    const textContent = teaser.querySelector(".cmp-teaser__content");
-    const image = teaser.querySelector(".cmp-teaser__image img, img");
-    if (!textContent && !image) {
-      element.replaceWith(...element.childNodes);
-      return;
-    }
-    const cells = [
-      [textContent || "", image || ""]
-    ];
-    const block = WebImporter.Blocks.createBlock(document2, { name: "columns-featured", cells });
-    element.replaceWith(block);
-  }
-
-  // tools/importer/parsers/cards-article.js
-  function buildImageListCard(root, document2) {
-    const image = root.querySelector(".cmp-image-list__item-image img, img");
-    const contentCell = [];
-    const titleEl = root.querySelector(".cmp-image-list__item-title");
-    const linkEl = root.querySelector(
-      ".cmp-image-list__item-title-link, .cmp-image-list__item-image-link"
-    );
-    const href = linkEl && linkEl.getAttribute("href");
-    if (titleEl) {
-      const heading = document2.createElement("h3");
-      const titleText = titleEl.textContent.trim();
-      if (href) {
-        const link = document2.createElement("a");
-        link.href = href;
-        link.textContent = titleText;
-        heading.append(link);
-      } else {
-        heading.textContent = titleText;
-      }
-      contentCell.push(heading);
-    }
-    const description = root.querySelector(".cmp-image-list__item-description");
-    if (description) {
-      const p = document2.createElement("p");
-      p.textContent = description.textContent.trim();
-      contentCell.push(p);
-    }
-    if (!image && !contentCell.length) return null;
-    return [image || "", contentCell];
-  }
-  function buildSecureTeaserCard(root, document2) {
-    const image = root.querySelector(".cmp-teaser__image img, img");
-    const contentCell = [];
-    const titleEl = root.querySelector(".cmp-teaser__title");
-    if (titleEl) {
-      const heading = document2.createElement("h3");
-      heading.textContent = titleEl.textContent.trim();
-      contentCell.push(heading);
-    }
-    const description = root.querySelector(".cmp-teaser__description");
-    if (description) {
-      const descText = description.textContent.trim();
-      if (descText) {
-        const p = document2.createElement("p");
-        p.textContent = descText;
-        contentCell.push(p);
-      }
-    }
-    const actionLink = root.querySelector(".cmp-teaser__action-link");
-    const actionHref = actionLink && actionLink.getAttribute("href");
-    const actionContainer = root.querySelector(".cmp-teaser__action-container");
-    const ctaText = actionLink && actionLink.textContent.trim() || actionContainer && actionContainer.textContent.trim() || "";
-    if (ctaText) {
-      const p = document2.createElement("p");
-      if (actionHref) {
-        const link = document2.createElement("a");
-        link.href = actionHref;
-        link.textContent = ctaText;
-        p.append(link);
-      } else {
-        p.textContent = ctaText;
-      }
-      contentCell.push(p);
-    }
-    if (!image && !contentCell.length) return null;
-    return [contentCell, image || ""];
-  }
-  function parse2(element, { document: document2 }) {
-    const listItems = Array.from(element.querySelectorAll(".cmp-image-list__item"));
-    if (listItems.length) {
-      const cells2 = [];
-      listItems.forEach((item) => {
-        const row = buildImageListCard(item, document2);
-        if (row) cells2.push(row);
-      });
-      if (!cells2.length) {
-        element.replaceWith(...element.childNodes);
-        return;
-      }
-      const block2 = WebImporter.Blocks.createBlock(document2, { name: "cards-article", cells: cells2 });
-      element.replaceWith(block2);
-      return;
-    }
-    const parent = element.parentNode;
-    const secureTeasers = parent ? Array.from(parent.children).filter(
-      (el) => el.matches && el.matches(".teaser.cmp-teaser--secure")
-    ) : [];
-    const group = secureTeasers.length ? secureTeasers : [element];
     const cells = [];
-    group.forEach((teaser) => {
-      const root = teaser.querySelector(".cmp-teaser") || teaser;
-      const row = buildSecureTeaserCard(root, document2);
-      if (row) cells.push(row);
+    let items = Array.from(element.querySelectorAll(".cmp-accordion__item"));
+    if (!items.length) items = Array.from(element.querySelectorAll('[class*="accordion__item"]'));
+    items.forEach((item) => {
+      const titleEl = item.querySelector(".cmp-accordion__title") || item.querySelector(".cmp-accordion__button") || item.querySelector(".cmp-accordion__header");
+      const title = titleEl ? titleEl.textContent.trim() : "";
+      const panel = item.querySelector(".cmp-accordion__panel") || item.querySelector('[class*="accordion__panel"]');
+      const contentRoot = panel || item;
+      let contentNodes = Array.from(
+        contentRoot.querySelectorAll("h2, h3, h4, h5, h6, p, ul, ol, img")
+      );
+      contentNodes = contentNodes.filter(
+        (node) => !contentNodes.some((other) => other !== node && other.contains(node))
+      );
+      contentNodes = contentNodes.filter(
+        (node) => node.textContent.replace(/ /g, " ").trim().length > 0 || node.querySelector("img, a[href]")
+      );
+      const contentCell = contentNodes.length ? contentNodes : [contentRoot];
+      if (!title && !contentNodes.length) return;
+      cells.push([title || "", contentCell]);
     });
     if (!cells.length) {
       element.replaceWith(...element.childNodes);
       return;
     }
-    const block = WebImporter.Blocks.createBlock(document2, { name: "cards-article", cells });
-    group[0].replaceWith(block);
-    group.slice(1).forEach((teaser) => {
-      if (teaser.parentNode) teaser.remove();
-    });
+    const block = WebImporter.Blocks.createBlock(document2, { name: "accordion-faq", cells });
+    element.replaceWith(block);
   }
 
   // tools/importer/transformers/wknd-cleanup.js
@@ -241,61 +150,32 @@ var CustomImportScript = (() => {
     }
   }
 
-  // tools/importer/import-magazine.js
+  // tools/importer/import-faqs.js
   var PAGE_TEMPLATE = {
-    name: "magazine",
-    description: "WKND magazine listing page - featured article, all articles grid, members-only teasers",
+    name: "faqs",
+    description: "WKND FAQs page",
     urls: [
-      "https://www.wknd.site/us/en/magazine.html"
+      "https://www.wknd.site/us/en/faqs.html"
     ],
     blocks: [
       {
-        name: "columns-featured",
-        instances: [".teaser.cmp-teaser--featured"]
-      },
-      {
-        name: "cards-article",
-        instances: [".image-list.list", ".teaser.cmp-teaser--secure"]
+        name: "accordion-faq",
+        instances: [".accordion.panelcontainer"]
       }
     ],
     sections: [
       {
         id: "section-1",
-        name: "Page title",
-        selector: "main.cmp-layout-container--fixed:nth-of-type(1)",
+        name: "FAQs content",
+        selector: "main.cmp-layout-container--fixed",
         style: null,
-        blocks: [],
-        defaultContent: ["h1"]
-      },
-      {
-        id: "section-2",
-        name: "Featured article teaser",
-        selector: ".teaser.cmp-teaser--featured",
-        style: "highlight",
-        blocks: ["columns-featured"],
-        defaultContent: []
-      },
-      {
-        id: "section-3",
-        name: "All articles grid",
-        selector: ".image-list.list",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: []
-      },
-      {
-        id: "section-4",
-        name: "Members Only teasers",
-        selector: ".teaser.cmp-teaser--secure",
-        style: null,
-        blocks: ["cards-article"],
-        defaultContent: []
+        blocks: ["accordion-faq"],
+        defaultContent: ["h1", "p"]
       }
     ]
   };
   var parsers = {
-    "columns-featured": parse,
-    "cards-article": parse2
+    "accordion-faq": parse
   };
   var transformers = [
     transform,
@@ -334,7 +214,7 @@ var CustomImportScript = (() => {
     console.log(`Found ${pageBlocks.length} block instances on page`);
     return pageBlocks;
   }
-  var import_magazine_default = {
+  var import_faqs_default = {
     transform: (payload) => {
       const {
         document: document2,
@@ -377,5 +257,5 @@ var CustomImportScript = (() => {
       }];
     }
   };
-  return __toCommonJS(import_magazine_exports);
+  return __toCommonJS(import_faqs_exports);
 })();

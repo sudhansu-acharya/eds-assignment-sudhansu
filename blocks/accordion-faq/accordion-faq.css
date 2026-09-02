@@ -1,0 +1,86 @@
+/*
+ * Block: accordion-faq — CSS from source computed styles (wknd.site/us/en/faqs)
+ * EDS DOM: .accordion-faq > details.accordion-faq-item >
+ *          summary.accordion-faq-item-label + div.accordion-faq-item-body
+ */
+.accordion-faq .accordion-faq-item {
+  border: none;
+}
+
+/* items are separated only by the divider under each question row (source: no gap) */
+.accordion-faq .accordion-faq-item + .accordion-faq-item {
+  margin-top: 0;
+}
+
+/* question row + text — source: button border-bottom 2px #ebebeb, transparent bg,
+   padding ~13px; title 16px Source Sans Pro 600 uppercase black */
+.accordion-faq .accordion-faq-item summary {
+  position: relative;
+  display: block;
+  margin: 0;
+  padding: 13px 46px 13px 21px;
+  border-bottom: 2px solid #ebebeb;
+  background-color: transparent;
+  color: #000;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-transform: uppercase;
+  list-style: none;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.accordion-faq .accordion-faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+/* +/- icon — source: wknd-icon-font glyph, 20px, black, right-aligned */
+.accordion-faq .accordion-faq-item summary::before,
+.accordion-faq .accordion-faq-item summary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 13px;
+  background-color: #000;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+/* horizontal bar */
+.accordion-faq .accordion-faq-item summary::before {
+  width: 20px;
+  height: 2px;
+  transform: translateY(-50%);
+}
+
+/* vertical bar (hidden when open to turn + into -) */
+.accordion-faq .accordion-faq-item summary::after {
+  width: 2px;
+  height: 20px;
+  right: 22px;
+  transform: translateX(50%) translateY(-50%);
+}
+
+.accordion-faq .accordion-faq-item[open] summary::after {
+  opacity: 0;
+}
+
+/* answer panel — source: padding 7px 0 0 7px, 14px/21px, color #202020 */
+.accordion-faq .accordion-faq-item .accordion-faq-item-body {
+  padding: 7px 0 0 7px;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.accordion-faq .accordion-faq-item .accordion-faq-item-body p {
+  margin: 0 0 0.8em;
+  font-size: 14px;
+  line-height: 21px;
+}
+
+.accordion-faq .accordion-faq-item .accordion-faq-item-body p:last-child {
+  margin-bottom: 0;
+}
