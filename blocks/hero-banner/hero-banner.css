@@ -81,15 +81,14 @@ main .hero-banner a:focus-visible {
     height: 640px;
   }
 
-  /* The content box is pulled up over the image with a negative margin, which
-     shrinks the block's flow height below the 640px image and lets the image
-     spill onto the following section. Reserve the image's height so following
-     content (e.g. "Current Adventures") always clears the banner. */
-  .hero-banner:not(.no-image) {
-    min-height: 640px;
-  }
-
+  /* The white content box is pulled up 180px over the image. In the source the
+     box's bottom is flush with the image's bottom, fully covering the lower
+     part — so no strip of image shows below it. Give the box min-height equal
+     to the pull-up so its bottom reaches the image bottom; this also makes the
+     block's flow height cover the image, so following content clears it. */
   .hero-banner:not(.no-image) > div:last-child {
+    box-sizing: border-box;
+    min-height: 180px;
     max-width: 1192px;
     margin: -180px auto 0;
     padding: 0 28px 28px;
