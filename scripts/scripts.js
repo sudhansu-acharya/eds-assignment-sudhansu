@@ -325,6 +325,79 @@ async function loadEager(doc) {
 }
 
 /**
+ * Inject JSON-LD structured data for richer search results:
+ * - Organization + WebSite on every page,
+ * - Article on magazine article pages (byline author, hero image, description),
+ * - BreadcrumbList wherever a breadcrumb list is present.
+ * @param {Document} doc The document
+ */
+function addStructuredData(doc) {
+  const add = (obj) => {
+    const s = doc.createElement('script');
+    s.type = 'application/ld+json';
+    s.textContent = JSON.stringify(obj);
+    doc.head.append(s);
+  };
+  const { origin } = window.location;
+  const canonical = doc.querySelector('link[rel="canonical"]')?.href || window.location.href;
+  const desc = doc.querySelector('meta[name="description"]')?.content || '';
+
+  // Organization + WebSite (site-wide)
+  add({
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: 'WKND Adventures and Travel',
+    url: origin,
+    logo: `${origin}/images/wknd-logo.svg`,
+  });
+  add({
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'WKND Adventures and Travel',
+    url: origin,
+  });
+
+  const main = doc.querySelector('main');
+
+  // Article (magazine article pages)
+  if (doc.body.classList.contains('magazine-article')) {
+    const headline = doc.querySelector('main h1')?.textContent.trim() || doc.title;
+    const byline = [...doc.querySelectorAll('main h4')].find((h) => /^By /i.test(h.textContent));
+    const author = byline ? byline.textContent.replace(/^By\s+/i, '').trim() : undefined;
+    const img = main?.querySelector('img')?.src;
+    add({
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline,
+      description: desc,
+      ...(img ? { image: [img] } : {}),
+      ...(author ? { author: { '@type': 'Person', name: author } } : {}),
+      publisher: { '@type': 'Organization', name: 'WKND Adventures and Travel' },
+      mainEntityOfPage: canonical,
+    });
+  }
+
+  // BreadcrumbList (any page with a breadcrumb ordered list)
+  const bcList = main?.querySelector('.default-content-wrapper ol');
+  const bcItems = bcList ? [...bcList.querySelectorAll('li')] : [];
+  if (bcItems.length >= 2) {
+    add({
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: bcItems.map((li, i) => {
+        const a = li.querySelector('a');
+        return {
+          '@type': 'ListItem',
+          position: i + 1,
+          name: (a || li).textContent.replace(/[▸▸]/g, '').trim(),
+          ...(a ? { item: new URL(a.getAttribute('href'), origin).href } : {}),
+        };
+      }),
+    });
+  }
+}
+
+/**
  * Loads everything that doesn't need to be delayed.
  * @param {Element} doc The container element
  */
@@ -342,6 +415,8 @@ async function loadLazy(doc) {
 
   loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
   loadFonts();
+
+  addStructuredData(doc);
 }
 
 /**
