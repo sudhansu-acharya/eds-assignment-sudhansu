@@ -3,6 +3,19 @@
  * EDS DOM: .accordion-faq > details.accordion-faq-item >
  *          summary.accordion-faq-item-label + div.accordion-faq-item-body
  */
+
+/* FAQ page layout — source constrains the FAQ content (title, lead image, intro,
+   accordion) to a narrower left column (~66%) rather than full width. The section
+   carries .accordion-faq-container because it holds the accordion-faq block, so
+   this scoping only affects the FAQ page. */
+@media (width >= 900px) {
+  main .section.accordion-faq-container > .default-content-wrapper,
+  main .section.accordion-faq-container > .accordion-faq-wrapper {
+    max-width: 66%;
+    margin-left: 0;
+  }
+}
+
 .accordion-faq .accordion-faq-item {
   border: none;
 }
@@ -83,4 +96,11 @@
 
 .accordion-faq .accordion-faq-item .accordion-faq-item-body p:last-child {
   margin-bottom: 0;
+}
+
+/* airier, justified intro paragraph to match source */
+/* stylelint-disable-next-line no-descending-specificity */
+main .section.accordion-faq-container > .default-content-wrapper p {
+  line-height: 2.5;
+  text-align: justify;
 }
