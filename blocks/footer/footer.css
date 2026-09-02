@@ -48,19 +48,31 @@ footer .footer-social h4 {
   font-family: var(--body-font-family);
   font-size: 16px;
   font-weight: 600;
+  text-transform: uppercase;
 }
 
 footer .footer-social ul {
   display: flex;
+  align-items: center;
   gap: 16px;
   margin: 0 0 20px;
   padding: 0;
   list-style: none;
 }
 
+footer .footer-social li { display: flex; }
+
+footer .footer-social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #ebebeb;
+}
+
 footer .footer-social img {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
+  display: block;
 
   /* icons ship with a dark fill; render them light to match the dark footer */
   filter: brightness(0) invert(0.9);
@@ -80,11 +92,6 @@ footer .footer-brand a {
   font-size: 14px;
   text-transform: uppercase;
   text-decoration: none;
-}
-
-footer .footer-social a {
-  display: inline-flex;
-  color: #ebebeb;
 }
 
 footer .footer-legal a {
