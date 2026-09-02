@@ -116,18 +116,30 @@ footer .footer-social a:hover {
     display: grid;
     grid-template-columns: 1fr auto;
     column-gap: 48px;
-    align-items: start;
+
+    /* brand row (logo + nav) and social block share the same vertical center */
+    align-items: center;
     padding: 16px 32px 24px;
   }
 
+  /* logo and nav sit side-by-side on one row (not stacked), matching source */
   footer .footer-brand {
     grid-column: 1;
     grid-row: 1;
+    flex-direction: row;
+    align-items: center;
+    gap: 24px;
+    padding-bottom: 0;
   }
 
   footer .footer-social {
     grid-column: 2;
     grid-row: 1;
+  }
+
+  /* social block: heading + icons, level with the brand row */
+  footer .footer-social ul {
+    margin-bottom: 0;
   }
 
   footer .footer-legal {
