@@ -143,6 +143,35 @@ function decorateButtons(main) {
 }
 
 /**
+ * Strip the `.html` extension from internal links.
+ * The migrated content carries source links like `/us/en/magazine/x.html`, but
+ * EDS serves pages extensionless — so those links 404. Rewrite same-origin
+ * (and root-relative) links to drop a trailing `.html`, keeping any query/hash.
+ * @param {Element} main The container element
+ */
+function rewriteInternalLinks(main) {
+  main.querySelectorAll('a[href*=".html"]').forEach((a) => {
+    const href = a.getAttribute('href');
+    if (!href) return;
+    // only touch root-relative links or links on this site's origin
+    const isRootRelative = href.startsWith('/');
+    let url;
+    try {
+      url = new URL(href, window.location.href);
+    } catch {
+      return;
+    }
+    if (!isRootRelative && url.origin !== window.location.origin) return;
+    if (!url.pathname.endsWith('.html')) return;
+    url.pathname = url.pathname.slice(0, -'.html'.length);
+    // preserve the original relative/absolute form
+    a.setAttribute('href', isRootRelative
+      ? `${url.pathname}${url.search}${url.hash}`
+      : url.href);
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -153,6 +182,7 @@ export function decorateMain(main) {
   decorateSections(main);
   decorateBlocks(main);
   decorateButtons(main);
+  rewriteInternalLinks(main);
 }
 
 /**
