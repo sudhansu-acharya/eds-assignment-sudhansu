@@ -62,7 +62,7 @@
   margin: 0;
 }
 
-/* title — Source Sans Pro 18px/27px weight 400, blue link, normal case */
+/* title — Source Sans Pro 18px, dark, bold, UPPERCASE (WKND rendered style) */
 .cards-article .cards-article-card-body h1,
 .cards-article .cards-article-card-body h2,
 .cards-article .cards-article-card-body h3,
@@ -73,10 +73,10 @@
   padding: 0;
   font-family: var(--body-font-family);
   font-size: 18px;
-  font-weight: 400;
+  font-weight: 600;
   line-height: 27px;
-  text-transform: none;
-  color: var(--link-color);
+  text-transform: uppercase;
+  color: var(--text-color);
   text-align: left;
 }
 
