@@ -380,10 +380,43 @@ body.magazine-article main > .section:has(h4) > .default-content-wrapper p {
 
 /* ===== Adventure detail pages ===== */
 
-/* Lead carousel — one slide visible at a time, ~400px tall (matches source). */
+/* Breadcrumb — imported as an ordered list; render inline with no numbers and
+   a yellow chevron separator, uppercase (matches source). */
+body.adventure-detail main > .section:first-of-type .default-content-wrapper ol {
+  margin: 0 0 8px;
+  padding: 0;
+  list-style: none;
+}
+
+body.adventure-detail main > .section:first-of-type .default-content-wrapper ol li {
+  display: inline;
+  font-size: 14px;
+  font-weight: 400;
+  text-transform: uppercase;
+  color: var(--text-color);
+}
+
+body.adventure-detail main > .section:first-of-type .default-content-wrapper ol li + li::before {
+  content: '\25B8';
+  margin: 0 10px;
+  color: #ffea00;
+  font-weight: 700;
+}
+
+body.adventure-detail main > .section:first-of-type .default-content-wrapper ol a {
+  font-weight: 600;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+/* Lead carousel — full-bleed (edge-to-edge like source), one slide visible,
+   ~400px tall. The breadcrumb above it stays inset within the padded wrapper;
+   only the carousel breaks out to the viewport width. */
 body.adventure-detail .lead-carousel {
   position: relative;
   overflow: hidden;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
 }
 
 body.adventure-detail .lead-carousel-slide {
