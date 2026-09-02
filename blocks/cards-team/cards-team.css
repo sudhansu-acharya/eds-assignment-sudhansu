@@ -93,9 +93,9 @@ main .section.cards-team-container > .cards-team-wrapper {
 
 /* Social icon links row.
    Source renders these as 48x48 dark square icon buttons (wknd-icon-font, not
-   available locally). We keep the dark-button aesthetic with readable text
-   labels laid out in a centered horizontal row. */
-.cards-team .cards-team-card-body p:last-of-type {
+   available locally). The block JS swaps the text links for the SVG icons we
+   ship for the footer; we render them as the same dark square buttons. */
+.cards-team .cards-team-card-body .cards-team-card-social {
   display: flex;
   flex-wrap: nowrap;
   justify-content: center;
@@ -103,7 +103,7 @@ main .section.cards-team-container > .cards-team-wrapper {
   margin: 4px 0 0;
 }
 
-.cards-team .cards-team-card-body p:last-of-type a:any-link {
+.cards-team .cards-team-card-body .cards-team-card-social a:any-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -113,13 +113,20 @@ main .section.cards-team-container > .cards-team-wrapper {
   overflow: hidden;
   background-color: var(--text-color);
   color: var(--background-color);
-  font-size: var(--body-font-size-xs);
   line-height: 1;
   text-decoration: none;
 }
 
-.cards-team .cards-team-card-body p:last-of-type a:any-link:hover,
-.cards-team .cards-team-card-body p:last-of-type a:any-link:focus-visible {
+/* SVG icons ship with a dark fill; render them light on the dark button */
+.cards-team .cards-team-card-body .cards-team-card-social a:any-link img {
+  width: 20px;
+  height: 20px;
+  display: block;
+  filter: brightness(0) invert(1);
+}
+
+.cards-team .cards-team-card-body .cards-team-card-social a:any-link:hover,
+.cards-team .cards-team-card-body .cards-team-card-social a:any-link:focus-visible {
   background-color: var(--dark-color);
   color: var(--background-color);
   text-decoration: none;
