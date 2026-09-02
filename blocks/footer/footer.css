@@ -37,6 +37,9 @@ footer .footer-brand ul {
   flex-wrap: wrap;
   align-items: center;
   gap: 0;
+
+  /* pull left by the link padding so the first item's text sits flush with the
+     logo/content edge on mobile */
   margin: 0 -17px;
   padding: 0;
   list-style: none;
@@ -80,15 +83,16 @@ footer .footer-social img {
   transition: filter 0.2s ease;
 }
 
-/* legal */
+/* legal — justified body copy aligned to the content edge (matches source) */
 footer .footer-legal p {
   font-size: 12px;
   line-height: 1.6;
   color: #f7f7f7;
+  text-align: justify;
 }
 
-/* links */
-footer .footer-brand a {
+/* links — nav links only (NOT the logo link, which must sit flush at the edge) */
+footer .footer-brand ul a {
   display: inline-block;
   padding: 15px 17px;
   color: #ebebeb;
@@ -99,6 +103,15 @@ footer .footer-brand a {
   white-space: nowrap;
 }
 
+/* logo link sits flush — no padding so the logo aligns to the content edge */
+footer .footer-brand > p a {
+  display: inline-block;
+  padding: 0;
+  color: #ebebeb;
+  text-decoration: none;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
 footer .footer-legal a {
   color: #f7f7f7;
   text-decoration: underline;
@@ -132,13 +145,20 @@ footer .footer-social a:hover {
     padding-bottom: 0;
   }
 
+  /* social block: right-aligned heading + icons (matches source) */
   footer .footer-social {
     grid-column: 2;
     grid-row: 1;
+    text-align: right;
   }
 
-  /* social block: heading + icons, level with the brand row */
+  footer .footer-social h4 {
+    text-align: right;
+  }
+
+  /* icons row aligned to the right, level with the brand row */
   footer .footer-social ul {
+    justify-content: flex-end;
     margin-bottom: 0;
   }
 
