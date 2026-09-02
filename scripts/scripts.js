@@ -205,6 +205,86 @@ function decorateMagazineArticle(main) {
 }
 
 /**
+ * Adventure detail pages (identified by the trip-facts + adventure-tabs blocks)
+ * carry a lead "carousel" that imported as several stacked images plus a
+ * leftover "Previous Next" line and empty dots list. Rebuild it as a single-
+ * slide carousel (one image visible, prev/next + dots), and tag the body so the
+ * facts panel can be laid out as a left sidebar beside the tabbed content.
+ * @param {Element} main The container element
+ */
+function decorateAdventureDetail(main) {
+  if (!(main.querySelector('.table-facts') && main.querySelector('.tabs-adventure'))) return;
+  document.body.classList.add('adventure-detail');
+
+  // The lead is the first default-content wrapper: it holds the breadcrumb list,
+  // the slide images, a "Previous Next" paragraph and an empty dots <ol>.
+  const lead = main.querySelector('.default-content-wrapper');
+  if (!lead) return;
+  const pics = [...lead.querySelectorAll('p > picture')];
+  if (pics.length < 2) return;
+
+  const carousel = document.createElement('div');
+  carousel.className = 'lead-carousel';
+  const track = document.createElement('div');
+  track.className = 'lead-carousel-track';
+  pics.forEach((pic, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'lead-carousel-slide';
+    if (i === 0) slide.classList.add('active');
+    slide.append(pic.closest('p') || pic);
+    track.append(slide);
+  });
+  carousel.append(track);
+
+  const slides = [...track.children];
+  const dotsWrap = document.createElement('div');
+  dotsWrap.className = 'lead-carousel-dots';
+  const dots = [];
+
+  const show = (idx) => {
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    dots.forEach((d, i) => d.setAttribute('aria-selected', i === idx ? 'true' : 'false'));
+    carousel.dataset.index = idx;
+  };
+
+  // dots
+  slides.forEach((_, i) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.setAttribute('aria-label', `Show slide ${i + 1}`);
+    dot.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+    dot.addEventListener('click', () => show(i));
+    dotsWrap.append(dot);
+    dots.push(dot);
+  });
+
+  // prev / next
+  const nav = (label, delta) => {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = `lead-carousel-${label}`;
+    b.setAttribute('aria-label', label);
+    b.addEventListener('click', () => {
+      const n = slides.length;
+      const cur = Number(carousel.dataset.index || 0);
+      show((((cur + delta) % n) + n) % n);
+    });
+    return b;
+  };
+  carousel.append(nav('prev', -1), nav('next', 1), dotsWrap);
+
+  // Remove the leftover "Previous Next" text and empty dots list, then swap in
+  // the carousel where the first image paragraph was.
+  lead.querySelectorAll('ol').forEach((ol) => {
+    if (!ol.querySelector('a')) ol.remove(); // empty dots list (keep breadcrumb <ol>)
+  });
+  [...lead.querySelectorAll('p')].forEach((p) => {
+    if (!p.querySelector('picture') && /^\s*Previous\s+Next\s*$/i.test(p.textContent)) p.remove();
+  });
+  lead.append(carousel);
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -217,6 +297,7 @@ export function decorateMain(main) {
   decorateButtons(main);
   rewriteInternalLinks(main);
   decorateMagazineArticle(main);
+  decorateAdventureDetail(main);
 }
 
 /**

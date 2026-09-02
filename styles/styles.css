@@ -377,3 +377,88 @@ body.magazine-article main > .section:has(h4) > .default-content-wrapper p {
   line-height: 2.5;
   text-align: justify;
 }
+
+/* ===== Adventure detail pages ===== */
+
+/* Lead carousel — one slide visible at a time, ~400px tall (matches source). */
+body.adventure-detail .lead-carousel {
+  position: relative;
+  overflow: hidden;
+}
+
+body.adventure-detail .lead-carousel-slide {
+  display: none;
+}
+
+body.adventure-detail .lead-carousel-slide.active {
+  display: block;
+}
+
+/* stylelint-disable-next-line no-descending-specificity */
+body.adventure-detail .lead-carousel-slide p { margin: 0; }
+
+body.adventure-detail .lead-carousel-slide img {
+  width: 100%;
+  height: 400px;
+  object-fit: cover;
+  display: block;
+}
+
+/* prev / next controls */
+body.adventure-detail .lead-carousel-prev,
+body.adventure-detail .lead-carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: rgb(0 0 0 / 30%);
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+body.adventure-detail .lead-carousel-prev { left: 12px; }
+body.adventure-detail .lead-carousel-next { right: 12px; }
+
+body.adventure-detail .lead-carousel-prev::before { content: '‹'; }
+body.adventure-detail .lead-carousel-next::before { content: '›'; }
+
+/* dots */
+body.adventure-detail .lead-carousel-dots {
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+body.adventure-detail .lead-carousel-dots button {
+  width: 10px;
+  height: 10px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 60%);
+  cursor: pointer;
+}
+
+body.adventure-detail .lead-carousel-dots button[aria-selected='true'] {
+  background: #fff;
+}
+
+/* Facts panel as a left sidebar beside the tabbed content (desktop). */
+@media (width >= 900px) {
+  body.adventure-detail main > .section.table-facts-container {
+    float: left;
+    width: 300px;
+    margin-right: 40px;
+  }
+
+  body.adventure-detail main > .section.tabs-adventure-container {
+    overflow: hidden; /* form a column beside the floated facts panel */
+  }
+}
