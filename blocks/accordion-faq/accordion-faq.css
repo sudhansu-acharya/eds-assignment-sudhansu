@@ -4,6 +4,16 @@
  *          summary.accordion-faq-item-label + div.accordion-faq-item-body
  */
 
+/* Mobile gutter — WKND uses a narrower ~14px side gutter on the FAQ content than
+   the site-wide 24px. Scope to this section and to mobile widths only so the
+   desktop two-column grid and every other page are untouched. */
+@media (width < 900px) {
+  main .section.accordion-faq-container > .default-content-wrapper {
+    padding-right: 14px;
+    padding-left: 14px;
+  }
+}
+
 /* FAQ page layout — source lays the section out as TWO columns on desktop:
    a wide left column (~66%) with the title, lead image, intro and accordion, and
    a narrow right sidebar (~25%) holding "Need more help?" that is top-aligned with
