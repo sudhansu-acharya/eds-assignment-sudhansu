@@ -7,11 +7,15 @@
  * Values extracted from https://www.wknd.site/us/en/about-us.html (getComputedStyle).
  */
 
-/* Lay sibling card blocks into a centered, wrapping row.
-   The default-content wrappers (section headings/intros) stay block-level and
-   naturally break the two groups apart. */
+/* Center the wrapping row of inline-block card blocks. */
 main .section.cards-team-container {
   text-align: center;
+}
+
+/* But keep default content (section headings + intros) left-aligned —
+   the centering above must not bleed onto them. */
+main .section.cards-team-container > .default-content-wrapper {
+  text-align: left;
 }
 
 main .section.cards-team-container > .cards-team-wrapper {
