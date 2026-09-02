@@ -450,12 +450,24 @@ body.adventure-detail .lead-carousel-dots button[aria-selected='true'] {
   background: #fff;
 }
 
-/* Facts panel as a left sidebar beside the tabbed content (desktop). */
+/* Facts panel as a left sidebar beside the tabbed content (desktop).
+   Inset the floated panel to the centered content margin so it starts at the
+   same left edge as the rest of the page (matches source ~150px), instead of
+   hugging the full-bleed section edge. */
 @media (width >= 900px) {
   body.adventure-detail main > .section.table-facts-container {
     float: left;
-    width: 300px;
-    margin-right: 40px;
+    box-sizing: border-box;
+    width: calc(291px + max(32px, (100% - 1200px) / 2 + 32px));
+    padding-left: max(32px, (100% - 1200px) / 2 + 32px);
+    margin-right: 24px;
+  }
+
+  /* the facts panel's own inner wrapper must not re-center/pad */
+  body.adventure-detail main > .section.table-facts-container > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
   }
 
   body.adventure-detail main > .section.tabs-adventure-container {
