@@ -334,3 +334,25 @@ main .section.highlight {
   margin: 0;
   padding: 40px 0;
 }
+
+/* Magazine article pages — constrain the article body to a readable column and
+   render paragraphs justified/airy to match wknd.site article layout. Scoped to
+   the article body section (the one with the byline), so the lead image, the
+   related-articles ("Up Next") block and breadcrumbs keep their own widths. */
+@media (width >= 900px) {
+  body.magazine-article main > .section:has(h4) > .default-content-wrapper {
+    max-width: 810px;
+    margin-left: 0;
+  }
+}
+
+body.magazine-article main > .section:has(h4) > .default-content-wrapper h4 {
+  font-size: 16px;
+  font-weight: 400;
+}
+
+body.magazine-article main > .section:has(h4) > .default-content-wrapper p {
+  font-size: 18px;
+  line-height: 2.5;
+  text-align: justify;
+}

@@ -172,6 +172,27 @@ function rewriteInternalLinks(main) {
 }
 
 /**
+ * Magazine article pages (identified by the "Up Next" related-articles block)
+ * have no template metadata. Tag the body so the article body typography can be
+ * scoped, and drop the duplicate article title: the import captured the title
+ * twice — as the H1 and again as an H3 right after the byline. The source shows
+ * it once, so remove the redundant H3 that repeats the H1.
+ * @param {Element} main The container element
+ */
+function decorateMagazineArticle(main) {
+  if (!main.querySelector('.cards-upnext')) return;
+  document.body.classList.add('magazine-article');
+
+  const h1 = main.querySelector('h1');
+  if (!h1) return;
+  const title = h1.textContent.trim();
+  main.querySelectorAll('h3').forEach((h3) => {
+    // only the in-body duplicate (same text as the H1), not related-article headings
+    if (h3.textContent.trim() === title && !h3.closest('.cards-upnext')) h3.remove();
+  });
+}
+
+/**
  * Decorates the main element.
  * @param {Element} main The main element
  */
@@ -183,6 +204,7 @@ export function decorateMain(main) {
   decorateBlocks(main);
   decorateButtons(main);
   rewriteInternalLinks(main);
+  decorateMagazineArticle(main);
 }
 
 /**
