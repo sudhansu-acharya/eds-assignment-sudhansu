@@ -35,8 +35,9 @@ footer .footer-brand img {
 footer .footer-brand ul {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px 24px;
-  margin: 0;
+  align-items: center;
+  gap: 0;
+  margin: 0 -17px;
   padding: 0;
   list-style: none;
 }
@@ -88,10 +89,14 @@ footer .footer-legal p {
 
 /* links */
 footer .footer-brand a {
+  display: inline-block;
+  padding: 15px 17px;
   color: #ebebeb;
   font-size: 14px;
+  font-weight: 400;
   text-transform: uppercase;
   text-decoration: none;
+  white-space: nowrap;
 }
 
 footer .footer-legal a {

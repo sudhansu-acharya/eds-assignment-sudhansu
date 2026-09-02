@@ -42,6 +42,11 @@ export default async function decorate(block) {
 
   if (brandSection) {
     brandSection.classList.add('footer-brand');
+    // Source footer nav omits "Home" (the logo is Home) — drop that link so the
+    // footer nav matches the source's four items: Magazine, Adventures, FAQs, About Us.
+    brandSection.querySelectorAll('nav li a, ul li a').forEach((a) => {
+      if (a.textContent.trim().toLowerCase() === 'home') a.closest('li').remove();
+    });
     footer.append(brandSection);
   }
   if (socialSection) {
