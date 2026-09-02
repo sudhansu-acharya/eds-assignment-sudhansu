@@ -99,7 +99,27 @@ footer .footer-social a:hover {
 
 /* desktop */
 @media (width >= 900px) {
+  /* top band: brand (logo + nav) and social side-by-side; legal spans full width below */
   footer .footer-inner {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    column-gap: 48px;
+    align-items: start;
     padding: 16px 32px 24px;
+  }
+
+  footer .footer-brand {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  footer .footer-social {
+    grid-column: 2;
+    grid-row: 1;
+  }
+
+  footer .footer-legal {
+    grid-column: 1 / -1;
+    grid-row: 2;
   }
 }
