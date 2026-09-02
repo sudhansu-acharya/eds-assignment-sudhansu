@@ -4,16 +4,71 @@
  *          summary.accordion-faq-item-label + div.accordion-faq-item-body
  */
 
-/* FAQ page layout — source constrains the FAQ content (title, lead image, intro,
-   accordion) to a narrower left column (~66%) rather than full width. The section
-   carries .accordion-faq-container because it holds the accordion-faq block, so
-   this scoping only affects the FAQ page. */
+/* FAQ page layout — source lays the section out as TWO columns on desktop:
+   a wide left column (~66%) with the title, lead image, intro and accordion, and
+   a narrow right sidebar (~25%) holding "Need more help?" that is top-aligned with
+   the page title. The :has() guard applies this only to the FAQ pattern (a default
+   -content wrapper, then the accordion, then a second default-content wrapper), so
+   a bare accordion elsewhere keeps its normal full-width stacked layout. */
 @media (width >= 900px) {
-  main .section.accordion-faq-container > .default-content-wrapper,
-  main .section.accordion-faq-container > .accordion-faq-wrapper {
-    max-width: 66%;
-    margin-left: 0;
+  main .section.accordion-faq-container:has(
+    > .default-content-wrapper ~ .accordion-faq-wrapper ~ .default-content-wrapper
+  ) {
+    display: grid;
+    grid-template-columns: minmax(0, 66fr) minmax(0, 25fr);
+    column-gap: 9%;
+    align-items: start;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 32px;
   }
+
+  /* the wrappers fill their grid cell; drop their own centering/padding so the
+     section-level max-width and padding govern the columns instead */
+  main .section.accordion-faq-container:has(
+    > .default-content-wrapper ~ .accordion-faq-wrapper ~ .default-content-wrapper
+  ) > div {
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* left column: intro (row 1) then accordion (row 2) */
+  main .section.accordion-faq-container > .default-content-wrapper:first-child {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  main .section.accordion-faq-container > .accordion-faq-wrapper {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  /* right sidebar: "Need more help?" pinned to the top, next to the title */
+  main .section.accordion-faq-container > .default-content-wrapper:last-child {
+    grid-column: 2;
+    grid-row: 1 / span 2;
+  }
+}
+
+/* sidebar "Need more help?" heading — Asar serif, 24px, regular, dark */
+.accordion-faq-container > .default-content-wrapper:last-child h3 {
+  margin: 27px 0 13.5px;
+  font-family: var(--heading-font-family);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.25;
+  color: var(--text-color);
+  text-align: left;
+}
+
+/* sidebar contact paragraph — plain left-aligned body text (NOT justified) */
+.accordion-faq-container > .default-content-wrapper:last-child p {
+  margin: 0;
+  font-family: var(--body-font-family);
+  font-size: 16px;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .accordion-faq .accordion-faq-item {
@@ -98,9 +153,10 @@
   margin-bottom: 0;
 }
 
-/* airier, justified intro paragraph to match source */
+/* airier, justified intro paragraph to match source (first wrapper only —
+   the sidebar contact paragraph is styled separately above) */
 /* stylelint-disable-next-line no-descending-specificity */
-main .section.accordion-faq-container > .default-content-wrapper p {
+main .section.accordion-faq-container > .default-content-wrapper:first-child p {
   line-height: 2.5;
   text-align: justify;
 }
