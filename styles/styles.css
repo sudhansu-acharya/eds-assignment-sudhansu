@@ -72,6 +72,16 @@ header {
   height: var(--nav-height);
 }
 
+/* The desktop header has a utility row (locale / sign in) above the main nav
+   row, so it is taller than --nav-height. Reserve that extra height on the
+   placeholder so fixed-header content (e.g. the adventure breadcrumb) isn't
+   hidden underneath it. */
+@media (width >= 900px) {
+  header {
+    height: 124px;
+  }
+}
+
 header .header,
 footer .footer {
   visibility: hidden;
