@@ -27,10 +27,15 @@ function cardSlug(li) {
  * @param {Element} ul the decorated card list
  */
 function addAdventureFilter(block, ul) {
+  // Only on the adventures listing page — NOT the homepage "Where do you want
+  // to go?" teaser (which is a 4-card cards-article whose cards also link to
+  // /adventures/<slug>). The listing lives at a path ending in /adventures.
+  if (!/\/adventures\/?$/.test(window.location.pathname)) return;
+
   const items = [...ul.children];
   const slugs = items.map(cardSlug);
-  // Only treat as the adventures listing if all cards resolve to detail slugs.
-  if (items.length < 4 || slugs.some((s) => !s)) return;
+  // Require the full catalog (many cards) all resolving to detail slugs.
+  if (items.length < 8 || slugs.some((s) => !s)) return;
 
   const tablist = document.createElement('div');
   tablist.className = 'cards-article-tabs';
