@@ -1,5 +1,47 @@
 /* cards-article — WKND "image list" article cards (source .image-list.list) */
 
+/* Adventures category filter tabs — matches wknd.site/us/en/adventures:
+   selected tab = dark bg + white text; others = dark text on transparent. */
+.cards-article .cards-article-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 18px 0;
+}
+
+.cards-article .cards-article-tab {
+  margin: 0;
+  padding: 8px 16px;
+  border: 0;
+  background-color: transparent;
+  color: var(--text-color);
+  font-family: var(--body-font-family);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.25;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.cards-article .cards-article-tab[aria-selected='true'] {
+  background-color: var(--text-color);
+  color: #fff;
+}
+
+.cards-article .cards-article-tab:hover {
+  color: var(--link-color);
+}
+
+.cards-article .cards-article-tab[aria-selected='true']:hover {
+  color: #fff;
+}
+
+/* filtered-out cards */
+.cards-article ul > li[hidden] {
+  display: none;
+}
+
 .cards-article ul {
   display: grid;
   grid-template-columns: 1fr;
