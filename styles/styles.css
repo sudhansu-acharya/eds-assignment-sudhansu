@@ -289,6 +289,27 @@ main a.button:any-link:focus-visible {
   color: var(--link-hover-color);
 }
 
+/* WKND yellow CTA button (e.g. "All Trips", "All Articles") — solid yellow,
+   dark uppercase label. Overrides the plain-text-link treatment above. */
+main a.button.cta:any-link {
+  display: inline-block;
+  padding: 14px 35px;
+  background-color: #ffea00;
+  color: var(--text-color);
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+main a.button.cta:any-link:hover,
+main a.button.cta:any-link:focus-visible {
+  background-color: #ffea00;
+  color: var(--text-color);
+  text-decoration: none;
+}
+
 main img {
   max-width: 100%;
   width: auto;
