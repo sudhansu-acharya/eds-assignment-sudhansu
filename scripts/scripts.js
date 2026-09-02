@@ -121,10 +121,19 @@ function decorateButtons(main) {
       if (new URL(a.href).href === new URL(text, window.location).href) return;
     } catch { /* continue */ }
 
-    // require authored formatting for buttonization
     const strong = a.closest('strong');
     const em = a.closest('em');
-    if (!strong && !em) return;
+
+    // A lone navigational link that is the paragraph's only content is a WKND
+    // CTA (e.g. "All Trips", "All Articles") — the source renders these as
+    // yellow buttons. Exclude bare "#" links (author social links use those).
+    const href = a.getAttribute('href') || '';
+    const isLoneCta = !strong && !em
+      && p.childElementCount === 1
+      && href && href !== '#' && !href.startsWith('#');
+
+    // otherwise require authored formatting for buttonization
+    if (!strong && !em && !isLoneCta) return;
 
     p.className = 'button-wrapper';
     a.className = 'button';
@@ -135,9 +144,12 @@ function decorateButtons(main) {
     } else if (strong) {
       a.classList.add('primary');
       strong.replaceWith(a);
-    } else {
+    } else if (em) {
       a.classList.add('secondary');
       em.replaceWith(a);
+    } else {
+      // lone CTA link — WKND yellow button
+      a.classList.add('cta');
     }
   });
 }
