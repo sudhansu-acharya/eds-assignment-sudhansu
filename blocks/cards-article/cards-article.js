@@ -65,6 +65,74 @@ function addAdventureFilter(block, ul) {
   block.prepend(tablist);
 }
 
+/** Build one article card <li> from a query-index row. */
+function articleCard(row) {
+  const li = document.createElement('li');
+
+  const imageCell = document.createElement('div');
+  imageCell.className = 'cards-article-card-image';
+  if (row.image) {
+    const pic = createOptimizedPicture(row.image, row.title || '', false, [{ width: '750' }]);
+    const a = document.createElement('a');
+    a.href = row.path;
+    a.append(pic);
+    imageCell.append(a);
+  }
+
+  const body = document.createElement('div');
+  body.className = 'cards-article-card-body';
+  const h3 = document.createElement('h3');
+  const titleLink = document.createElement('a');
+  titleLink.href = row.path;
+  titleLink.textContent = row.title || row.path;
+  h3.append(titleLink);
+  body.append(h3);
+  if (row.description) {
+    const p = document.createElement('p');
+    p.textContent = row.description;
+    body.append(p);
+  }
+
+  li.append(imageCell, body);
+  return li;
+}
+
+/**
+ * Render the home page "Recent Articles" grid dynamically from the article
+ * query-index (article-index.json) instead of the statically-authored cards.
+ * Falls back to the authored cards if the index is unavailable. Scoped to the
+ * home page's "Recent Articles" section and to the current locale.
+ * @param {Element} block the cards-article block
+ * @param {Element} ul the decorated card list (static fallback)
+ * @returns {Promise<boolean>} true if the grid was populated from the index
+ */
+async function renderRecentArticles(block, ul) {
+  const heading = block.closest('.section')?.querySelector('h1,h2,h3');
+  const isRecent = heading && /recent articles/i.test(heading.textContent);
+  // home page only: /{cc}/{lang} with no further path segment
+  const localeMatch = window.location.pathname.match(/^\/([a-z]{2})\/([a-z]{2})\/?$/);
+  if (!isRecent || !localeMatch) return false;
+
+  const localePrefix = `/${localeMatch[1]}/${localeMatch[2]}/magazine/`;
+  try {
+    const resp = await fetch('/article-index.json');
+    if (!resp.ok) return false;
+    const { data = [] } = await resp.json();
+    const rows = data
+      .filter((r) => r.path && r.path.startsWith(localePrefix))
+      .sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0))
+      .slice(0, 4);
+    if (!rows.length) return false;
+
+    const freshUl = document.createElement('ul');
+    rows.forEach((r) => freshUl.append(articleCard(r)));
+    ul.replaceWith(freshUl);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 export default function decorate(block) {
   /* change to ul, li */
   const ul = document.createElement('ul');
@@ -84,4 +152,7 @@ export default function decorate(block) {
   block.textContent = '';
   block.append(ul);
   addAdventureFilter(block, ul);
+
+  // Home page: replace the authored Recent Articles cards with index-driven ones.
+  renderRecentArticles(block, ul);
 }
