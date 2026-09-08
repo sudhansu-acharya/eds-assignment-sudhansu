@@ -30,3 +30,28 @@ indices:
       lastModified:
         select: none
         value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
+
+  # Adventures — powers the dynamic "Current Adventures" grid on the adventures
+  # listing page. Indexes individual detail pages under /{locale}/adventures/
+  # but excludes the adventures listing itself.
+  adventures:
+    include:
+      - '/us/en/adventures/**'
+      - '/ca/en/adventures/**'
+    exclude:
+      - '/us/en/adventures'
+      - '/ca/en/adventures'
+    target: /adventure-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
