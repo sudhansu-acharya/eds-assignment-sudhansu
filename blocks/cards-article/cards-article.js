@@ -98,40 +98,65 @@ function articleCard(row) {
 }
 
 /**
- * Render the home page "Recent Articles" grid dynamically from the article
- * query-index (article-index.json) instead of the statically-authored cards.
- * Falls back to the authored cards if the index is unavailable. Scoped to the
- * home page's "Recent Articles" section and to the current locale.
+ * Fetch this locale's magazine articles from the query-index, newest first,
+ * excluding locked members-only content.
+ * @param {string} localePrefix e.g. "/us/en/magazine/"
+ * @param {number} [limit] max rows to return (omit for all)
+ * @returns {Promise<Array|null>} index rows, or null if unavailable
+ */
+async function fetchArticles(localePrefix, limit) {
+  try {
+    const resp = await fetch('/article-index.json');
+    if (!resp.ok) return null;
+    const { data = [] } = await resp.json();
+    const rows = data
+      .filter((r) => r.path && r.path.startsWith(localePrefix) && !r.path.includes('/members-only/'))
+      .sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0));
+    return limit ? rows.slice(0, limit) : rows;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Render an article grid dynamically from the query-index, replacing the
+ * statically-authored cards. Used for the home page "Recent Articles" (top 4)
+ * and the magazine listing "All Articles" (all articles). Leaves the authored
+ * cards in place if the index is unavailable. Never touches the "Members Only"
+ * block, whose locked teasers are not indexed.
  * @param {Element} block the cards-article block
  * @param {Element} ul the decorated card list (static fallback)
  * @returns {Promise<boolean>} true if the grid was populated from the index
  */
-async function renderRecentArticles(block, ul) {
+async function renderArticleIndex(block, ul) {
   const heading = block.closest('.section')?.querySelector('h1,h2,h3');
-  const isRecent = heading && /recent articles/i.test(heading.textContent);
-  // home page only: /{cc}/{lang} with no further path segment
-  const localeMatch = window.location.pathname.match(/^\/([a-z]{2})\/([a-z]{2})\/?$/);
-  if (!isRecent || !localeMatch) return false;
+  const headingText = heading ? heading.textContent : '';
+  const path = window.location.pathname;
 
-  const localePrefix = `/${localeMatch[1]}/${localeMatch[2]}/magazine/`;
-  try {
-    const resp = await fetch('/article-index.json');
-    if (!resp.ok) return false;
-    const { data = [] } = await resp.json();
-    const rows = data
-      // articles in this locale's magazine, excluding locked members-only content
-      .filter((r) => r.path && r.path.startsWith(localePrefix) && !r.path.includes('/members-only/'))
-      .sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0))
-      .slice(0, 4);
-    if (!rows.length) return false;
+  // Home page: /{cc}/{lang} with no further segment → "Recent Articles", top 4.
+  const homeMatch = path.match(/^\/([a-z]{2})\/([a-z]{2})\/?$/);
+  // Magazine listing: /{cc}/{lang}/magazine → "All Articles", all articles.
+  const magMatch = path.match(/^\/([a-z]{2})\/([a-z]{2})\/magazine\/?$/);
 
-    const freshUl = document.createElement('ul');
-    rows.forEach((r) => freshUl.append(articleCard(r)));
-    ul.replaceWith(freshUl);
-    return true;
-  } catch {
+  let localeMatch;
+  let limit;
+  if (homeMatch && /recent articles/i.test(headingText)) {
+    localeMatch = homeMatch;
+    limit = 4;
+  } else if (magMatch && /all articles/i.test(headingText)) {
+    localeMatch = magMatch;
+  } else {
     return false;
   }
+
+  const localePrefix = `/${localeMatch[1]}/${localeMatch[2]}/magazine/`;
+  const rows = await fetchArticles(localePrefix, limit);
+  if (!rows || !rows.length) return false;
+
+  const freshUl = document.createElement('ul');
+  rows.forEach((r) => freshUl.append(articleCard(r)));
+  ul.replaceWith(freshUl);
+  return true;
 }
 
 export default function decorate(block) {
@@ -154,6 +179,7 @@ export default function decorate(block) {
   block.append(ul);
   addAdventureFilter(block, ul);
 
-  // Home page: replace the authored Recent Articles cards with index-driven ones.
-  renderRecentArticles(block, ul);
+  // Home ("Recent Articles") and magazine listing ("All Articles"): replace the
+  // authored cards with index-driven ones.
+  renderArticleIndex(block, ul);
 }
