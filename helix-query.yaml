@@ -11,8 +11,11 @@ indices:
     exclude:
       - '/us/en/magazine'
       - '/ca/en/magazine'
+      # members-only landing pages AND the locked articles beneath them
       - '/us/en/magazine/members-only'
       - '/ca/en/magazine/members-only'
+      - '/us/en/magazine/members-only/**'
+      - '/ca/en/magazine/members-only/**'
     target: /article-index.json
     properties:
       title:
