@@ -119,7 +119,8 @@ async function renderRecentArticles(block, ul) {
     if (!resp.ok) return false;
     const { data = [] } = await resp.json();
     const rows = data
-      .filter((r) => r.path && r.path.startsWith(localePrefix))
+      // articles in this locale's magazine, excluding locked members-only content
+      .filter((r) => r.path && r.path.startsWith(localePrefix) && !r.path.includes('/members-only/'))
       .sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0))
       .slice(0, 4);
     if (!rows.length) return false;
