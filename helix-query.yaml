@@ -1,0 +1,29 @@
+version: 1
+
+indices:
+  # Magazine articles — powers the dynamic "Recent Articles" list on the home page.
+  # Indexes individual article pages under /{locale}/magazine/ but excludes the
+  # magazine listing itself and the members-only landing/section pages.
+  articles:
+    include:
+      - '/us/en/magazine/**'
+      - '/ca/en/magazine/**'
+    exclude:
+      - '/us/en/magazine'
+      - '/ca/en/magazine'
+      - '/us/en/magazine/members-only'
+      - '/ca/en/magazine/members-only'
+    target: /article-index.json
+    properties:
+      title:
+        select: head > meta[property="og:title"]
+        value: attribute(el, 'content')
+      image:
+        select: head > meta[property="og:image"]
+        value: attribute(el, 'content')
+      description:
+        select: head > meta[name="description"]
+        value: attribute(el, 'content')
+      lastModified:
+        select: none
+        value: parseTimestamp(headers['last-modified'], 'ddd, DD MMM YYYY hh:mm:ss GMT')
