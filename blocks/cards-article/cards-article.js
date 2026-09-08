@@ -98,20 +98,27 @@ function articleCard(row) {
 }
 
 /**
- * Fetch this locale's magazine articles from the query-index, newest first,
- * excluding locked members-only content.
+ * Fetch a locale's rows from a query-index, filtered to a path prefix and
+ * ordered. Excludes locked members-only content.
+ * @param {string} indexUrl e.g. "/article-index.json"
  * @param {string} localePrefix e.g. "/us/en/magazine/"
- * @param {number} [limit] max rows to return (omit for all)
+ * @param {object} [opts]
+ * @param {number} [opts.limit] max rows to return (omit for all)
+ * @param {'recent'|'title'} [opts.sort] ordering; newest-first or A→Z by title
  * @returns {Promise<Array|null>} index rows, or null if unavailable
  */
-async function fetchArticles(localePrefix, limit) {
+async function fetchIndex(indexUrl, localePrefix, { limit, sort = 'recent' } = {}) {
   try {
-    const resp = await fetch('/article-index.json');
+    const resp = await fetch(indexUrl);
     if (!resp.ok) return null;
     const { data = [] } = await resp.json();
     const rows = data
-      .filter((r) => r.path && r.path.startsWith(localePrefix) && !r.path.includes('/members-only/'))
-      .sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0));
+      .filter((r) => r.path && r.path.startsWith(localePrefix) && !r.path.includes('/members-only/'));
+    if (sort === 'title') {
+      rows.sort((a, b) => (a.title || '').localeCompare(b.title || ''));
+    } else {
+      rows.sort((a, b) => Number(b.lastModified || 0) - Number(a.lastModified || 0));
+    }
     return limit ? rows.slice(0, limit) : rows;
   } catch {
     return null;
@@ -119,14 +126,16 @@ async function fetchArticles(localePrefix, limit) {
 }
 
 /**
- * Render an article grid dynamically from the query-index, replacing the
- * statically-authored cards. Used for the home page "Recent Articles" (top 4)
- * and the magazine listing "All Articles" (all articles). Leaves the authored
- * cards in place if the index is unavailable. Never touches the "Members Only"
- * block, whose locked teasers are not indexed.
+ * Render a card grid dynamically from a query-index, replacing the
+ * statically-authored cards. Used for:
+ *  - home page "Recent Articles" (magazine index, newest-first, top 4)
+ *  - magazine listing "All Articles" (magazine index, newest-first, all)
+ *  - adventures listing "Current Adventures" (adventure index, A→Z, all)
+ * Leaves the authored cards in place if the index is unavailable. Never touches
+ * the "Members Only" block, whose locked teasers are not indexed.
  * @param {Element} block the cards-article block
  * @param {Element} ul the decorated card list (static fallback)
- * @returns {Promise<boolean>} true if the grid was populated from the index
+ * @returns {Promise<Element>} the card list now in the DOM (fresh or original)
  */
 async function renderArticleIndex(block, ul) {
   const heading = block.closest('.section')?.querySelector('h1,h2,h3');
@@ -137,26 +146,40 @@ async function renderArticleIndex(block, ul) {
   const homeMatch = path.match(/^\/([a-z]{2})\/([a-z]{2})\/?$/);
   // Magazine listing: /{cc}/{lang}/magazine → "All Articles", all articles.
   const magMatch = path.match(/^\/([a-z]{2})\/([a-z]{2})\/magazine\/?$/);
+  // Adventures listing: /{cc}/{lang}/adventures → "Current Adventures", A→Z.
+  const advMatch = path.match(/^\/([a-z]{2})\/([a-z]{2})\/adventures\/?$/);
 
-  let localeMatch;
-  let limit;
+  let indexUrl;
+  let area;
+  let opts;
+  let match;
   if (homeMatch && /recent articles/i.test(headingText)) {
-    localeMatch = homeMatch;
-    limit = 4;
+    indexUrl = '/article-index.json';
+    area = 'magazine';
+    opts = { limit: 4, sort: 'recent' };
+    match = homeMatch;
   } else if (magMatch && /all articles/i.test(headingText)) {
-    localeMatch = magMatch;
+    indexUrl = '/article-index.json';
+    area = 'magazine';
+    opts = { sort: 'recent' };
+    match = magMatch;
+  } else if (advMatch && /current adventures/i.test(headingText)) {
+    indexUrl = '/adventure-index.json';
+    area = 'adventures';
+    opts = { sort: 'title' };
+    match = advMatch;
   } else {
-    return false;
+    return ul;
   }
 
-  const localePrefix = `/${localeMatch[1]}/${localeMatch[2]}/magazine/`;
-  const rows = await fetchArticles(localePrefix, limit);
-  if (!rows || !rows.length) return false;
+  const localePrefix = `/${match[1]}/${match[2]}/${area}/`;
+  const rows = await fetchIndex(indexUrl, localePrefix, opts);
+  if (!rows || !rows.length) return ul;
 
   const freshUl = document.createElement('ul');
   rows.forEach((r) => freshUl.append(articleCard(r)));
   ul.replaceWith(freshUl);
-  return true;
+  return freshUl;
 }
 
 export default function decorate(block) {
@@ -177,9 +200,10 @@ export default function decorate(block) {
   });
   block.textContent = '';
   block.append(ul);
-  addAdventureFilter(block, ul);
 
-  // Home ("Recent Articles") and magazine listing ("All Articles"): replace the
-  // authored cards with index-driven ones.
-  renderArticleIndex(block, ul);
+  // Home ("Recent Articles"), magazine ("All Articles") and adventures listing
+  // ("Current Adventures"): replace the authored cards with index-driven ones,
+  // then wire up the adventures category filter on whichever list is rendered
+  // (fresh dynamic list, or the original static one as fallback).
+  renderArticleIndex(block, ul).then((finalUl) => addAdventureFilter(block, finalUl));
 }
