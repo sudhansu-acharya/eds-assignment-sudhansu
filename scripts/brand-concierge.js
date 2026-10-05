@@ -57,7 +57,7 @@ async function install() {
     defaultConsent: 'in',
     edgeDomain: 'edge.adobedc.net',
     edgeBasePath: 'ee',
-    datastreamId: '1721b156-01d1-446a-92f4-6fb4934d4abd',
+    datastreamId: '81f2903c-ce3a-4557-a8a6-eac3f07f9021',
     orgId: '0B6930256441790E0A495FFE@AdobeOrg',
     conversation: {
       // Match the concierge's Prod (VA7) deployment, not the nearest Edge region.
