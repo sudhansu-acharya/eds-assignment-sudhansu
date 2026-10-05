@@ -517,3 +517,8 @@ body.adventure-detail .lead-carousel-dots button[aria-selected='true'] {
     overflow: hidden; /* form a column beside the floated facts panel */
   }
 }
+
+.brand-concierge [class~='bc-card__image'] {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}

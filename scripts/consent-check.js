@@ -37,8 +37,10 @@ function loadConsented() {
  */
 function onConsentUpdate() {
   const consented = hasConsent();
+  window.wkndConciergeConsent = consented;
   window.dispatchEvent(new CustomEvent('consent.update', { detail: { consented } }));
   if (consented) {
+    window.dispatchEvent(new CustomEvent('wknd:concierge-consent-granted'));
     loadConsented();
   }
 }

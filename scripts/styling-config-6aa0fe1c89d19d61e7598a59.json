@@ -1,0 +1,313 @@
+{
+  "id": "bff5db8b-b755-4d98-bf9a-3fd2b3da2313",
+  "name": "WKND TRENDSETTERS_26-09-09_bff5db8b-b755-4d98-bf9a-3fd2b3da2313",
+  "metadata": {
+    "brandName": "WKND TRENDSETTERS",
+    "version": "1.0.0",
+    "language": "en",
+    "namespace": "brand-concierge"
+  },
+  "behavior": {
+    "multimodalCarousel": {
+      "cardClickAction": "openLink"
+    },
+    "input": {
+      "enableVoiceInput": false,
+      "continuousVoiceMode": false,
+      "disableMultiline": true,
+      "showAiChatIcon": {
+        "icon": ""
+      }
+    },
+    "chat": {
+      "messageAlignment": "normal",
+      "messageWidth": "100%"
+    },
+    "privacyNotice": {
+      "title": "Privacy Notice",
+      "text": "Your use of this automated chatbot constitutes your consent that the personal information you provide in the chat session can be collected, used, disclosed, and retained by YourBrand and service providers acting on YourBrand's behalf in accordance with the YourBrand {Privacy Policy}. Please do not provide sensitive personal information (such as financial or health information) in the chatbot.",
+      "links": [
+        {
+          "text": "Privacy Policy",
+          "url": "<your-privacy-policy-url>"
+        }
+      ]
+    },
+    "meetingForm": {
+      "fieldsPerRow": 2,
+      "fieldLayoutRules": {
+        "textInputs": {
+          "allowTwoColumns": true,
+          "fieldTypes": [
+            "string",
+            "email",
+            "tel",
+            "number"
+          ],
+          "identifyBy": null
+        },
+        "dropdowns": {
+          "allowTwoColumns": false,
+          "fieldTypes": [
+            "select"
+          ],
+          "identifyBy": "hasOptions"
+        },
+        "checkboxes": {
+          "allowTwoColumns": false,
+          "fieldTypes": [
+            "boolean",
+            "checkbox"
+          ],
+          "identifyBy": null
+        }
+      },
+      "title": {
+        "text": "Schedule a Style Session",
+        "alignment": "left"
+      },
+      "subtitle": {
+        "text": "Connect with our trend experts to explore fresh looks.",
+        "alignment": "left"
+      },
+      "buttons": {
+        "submit": {
+          "text": "Book Now",
+          "alignment": "left"
+        },
+        "cancel": {
+          "text": "Cancel",
+          "alignment": "left"
+        }
+      }
+    },
+    "calendarWidget": {
+      "title": {
+        "text": "Pick a Time",
+        "alignment": "left"
+      },
+      "subtitle": {
+        "text": "Choose a convenient time for your session.",
+        "alignment": "left"
+      },
+      "postTitle": {
+        "text": "Once confirmed, you will receive a calendar invite with all the details. The specialist will already have this conversation context, so no need to repeat anything. Looking forward to connecting you with the right expert!",
+        "alignment": "left"
+      },
+      "buttons": {
+        "confirm": {
+          "text": "Confirm",
+          "alignment": "left"
+        },
+        "cancel": {
+          "text": "Cancel",
+          "alignment": "left"
+        }
+      }
+    },
+    "productCard": {
+      "actionButtonSize": "S"
+    },
+    "b2bLiveChat": {
+      "enabled": true
+    }
+  },
+  "disclaimer": {
+    "text": "WKND TRENDSETTERS is committed to providing accurate and up-to-date information.",
+    "links": [
+      {
+        "text": "Terms of Use",
+        "url": "https://www.wknd-trendsetters.site/terms-of-use"
+      }
+    ]
+  },
+  "text": {
+    "welcome.heading": "Welcome to WKND TRENDSETTERS",
+    "welcome.subheading": "Discover fresh looks, bold stories, and real-life style inspiration.",
+    "input.placeholder": "Ask about the latest trends or style tips.",
+    "input.messageInput.aria": "Type your message here",
+    "input.send.aria": "Send message",
+    "input.aiChatIcon.tooltip": "Chat with WKND TRENDSETTERS",
+    "input.mic.aria": "Use microphone",
+    "card.aria.select": "Select this option",
+    "carousel.prev.aria": "Previous card",
+    "carousel.next.aria": "Next card",
+    "scroll.bottom.aria": "Scroll to bottom",
+    "error.network": "Network error. Please try again.",
+    "loading.message": "Loading...",
+    "feedback.dialog.title.positive": "Positive Feedback",
+    "feedback.dialog.title.negative": "Negative Feedback",
+    "feedback.dialog.question.positive": "What did you enjoy?",
+    "feedback.dialog.question.negative": "What could be improved?",
+    "feedback.dialog.notes": "Additional comments",
+    "feedback.dialog.submit": "Submit",
+    "feedback.dialog.cancel": "Cancel",
+    "feedback.dialog.notes.placeholder": "Write your comments here...",
+    "feedback.toast.success": "Thank you for your feedback!",
+    "feedback.thumbsUp.aria": "Thumbs up",
+    "feedback.thumbsDown.aria": "Thumbs down",
+    "feedback.title": "Share your feedback",
+    "feedback.positive.title": "What did you like?",
+    "feedback.negative.title": "What can we improve?",
+    "feedback.submitButton": "Submit Feedback",
+    "feedback.positive.options": "",
+    "feedback.negative.options": ""
+  },
+  "arrays": {
+    "welcome.examples": [
+      {
+        "text": "Explore gaming tournaments",
+        "systemPrompt": "Tell me about the latest gaming tournaments.",
+        "backgroundColor": "#404040",
+        "image": "https://www.wknd-trendsetters.site/images/gaming-tournaments.avif"
+      },
+      {
+        "text": "Discover campus life trends",
+        "systemPrompt": "What are the latest campus life trends?",
+        "backgroundColor": "#5d5d5d",
+        "image": "https://www.wknd-trendsetters.site/images/campus-life.avif"
+      },
+      {
+        "text": "Concert crowd inspiration",
+        "systemPrompt": "Show me concert crowd style inspiration.",
+        "backgroundColor": "#797979",
+        "image": "https://www.wknd-trendsetters.site/images/concert-crowd.avif"
+      },
+      {
+        "text": "Fashion inspiration tips",
+        "systemPrompt": "What are some fresh fashion inspiration tips?",
+        "backgroundColor": "#969696",
+        "image": "https://www.wknd-trendsetters.site/images/fashion-inspiration.avif"
+      }
+    ],
+    "feedback.positive.options": [
+      "Helpful information",
+      "Easy to use",
+      "Great design",
+      "Fast responses",
+      "Other"
+    ],
+    "feedback.negative.options": [
+      "Confusing interface",
+      "Slow responses",
+      "Missing information",
+      "Technical issues",
+      "Other"
+    ]
+  },
+  "assets": {
+    "icons": {
+      "company": "https://www.wknd-trendsetters.site/images/logo.svg"
+    }
+  },
+  "visualProfile": {
+    "sendIconIconColor": "#ffffff",
+    "sendIconBackgroundColor": "#522752"
+  },
+  "theme": {
+    "--welcome-input-order": "3",
+    "--welcome-cards-order": "2",
+    "--welcome-heading-size-desktop": "2.5rem",
+    "--welcome-heading-size-mobile": "2rem",
+    "--welcome-heading-weight": "700",
+    "--welcome-heading-text-align": "center",
+    "--welcome-subheading-size-desktop": "1.25rem",
+    "--welcome-subheading-size-mobile": "1rem",
+    "--welcome-subheading-text-align": "center",
+    "--welcome-padding": "2rem",
+    "--prompt-suggestion-background": "#522752",
+    "--prompt-suggestion-background-hover": "#522752",
+    "--prompt-suggestion-text-color": "#522752",
+    "--prompt-suggestion-border-color": "#522752",
+    "--font-family": "Instrument Sans, sans-serif",
+    "--color-primary": "#404040",
+    "--color-text": "#522752",
+    "--line-height-body": "1.6",
+    "--main-container-background": "#ffffff",
+    "--input-height": "48px",
+    "--input-height-mobile": "40px",
+    "--input-border-radius": "8px",
+    "--input-border-radius-mobile": "6px",
+    "--input-background": "#ffffff",
+    "--input-outline-color": "#d9d9d9",
+    "--input-outline-width": "1px",
+    "--input-box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
+    "--input-focus-outline-width": "2px",
+    "--input-focus-outline-color": "#404040",
+    "--input-font-size": "1rem",
+    "--input-font-weight": "400",
+    "--input-text-color": "#404040",
+    "--input-button-height": "36px",
+    "--input-button-width": "36px",
+    "--submit-button-fill-color": "#ffffff",
+    "--submit-button-fill-color-disabled": "#CCCCCC",
+    "--color-button-submit": "#404040",
+    "--color-button-submit-hover": "#522752",
+    "--input-button-border-radius": "8px",
+    "--button-disabled-background": "#F0F0F0",
+    "--disclaimer-color": "#404040",
+    "--disclaimer-font-size": "0.875rem",
+    "--disclaimer-font-weight": "400",
+    "--message-user-background": "#404040",
+    "--message-user-text": "#ffffff",
+    "--message-border-radius": "8px",
+    "--message-padding": "1rem",
+    "--message-concierge-background": "#f3f3f3",
+    "--message-concierge-text": "#000000",
+    "--message-max-width": "100%",
+    "--chat-interface-max-width": "768px",
+    "--message-blocker-height": "48px",
+    "--loading-message-background": "#d9d9d9",
+    "--loading-dot-background": "#626262",
+    "--color-text-muted": "#626262",
+    "--citations-text-font-weight": "500",
+    "--citations-desktop-button-font-size": "0.875rem",
+    "--feedback-icon-btn-background": "#f5f5f5",
+    "--feedback-icon-btn-hover-background": "#eaeaea",
+    "--feedback-icon-btn-size-desktop": "40px",
+    "--feedback-container-gap": "1rem",
+    "--multimodal-card-box-shadow": "0 2px 4px rgba(0, 0, 0, 0.1)",
+    "--border-radius-card": "8px",
+    "--button-height-s": "36px",
+    "--button-primary-background": "#404040",
+    "--button-primary-text": "#ffffff",
+    "--button-primary-hover": "#522752",
+    "--button-secondary-border": "1px solid #404040",
+    "--button-secondary-text": "#404040",
+    "--button-secondary-hover": "#333333",
+    "--color-button-secondary-hover-text": "#ffffff",
+    "--privacy-notice-background": "#f5f5f5",
+    "--privacy-notice-padding": "1rem",
+    "--privacy-notice-title-color": "#626262",
+    "--privacy-notice-text-color": "#626262",
+    "--privacy-notice-text-font-size": "0.875rem",
+    "--privacy-notice-title-font-size": "1rem",
+    "--message-concierge-link-decoration": "underline",
+    "--color-secondary": "#f4fe8b",
+    "--prompt-suggestion-button-background": "#d9d9d9",
+    "--prompt-pill-background": "#f4fe8b",
+    "--button-primary-mobile-background": "#522752",
+    "--button-primary-mobile-hover": "#522752",
+    "--main-container-mobile-background": "#ffffff",
+    "--message-concierge-border-width": "1px",
+    "--message-concierge-link-color": "#404040",
+    "--prompt-suggestion-button-border-radius": "8px",
+    "--prompt-suggestion-button-padding": "0.5rem 1rem",
+    "--prompt-suggestions-container-gap": "0.5rem",
+    "--card-background": "#f4fe8b",
+    "--card-text-font-size": "1rem",
+    "--card-text-padding": "1rem",
+    "--chat-container-background": "#ffffff",
+    "--message-blocker-background": "#ffffff",
+    "--card-text-color": "#ffffff",
+    "--prompt-pill-border-color": "#f4fe8b",
+    "--prompt-pill-text-color": "#000000",
+    "--prompt-suggestion-button-text-color": "#626262",
+    "--prompt-suggestion-button-background-hover": "#d9d9d9",
+    "--welcome-heading-text-color": "#000000",
+    "--welcome-subheading-text-color": "#000000",
+    "--welcome-header-order": "1",
+    "--prompt-suggestions-flex-direction": "row",
+    "--prompt-suggestions-flex-wrap": "wrap"
+  }
+}

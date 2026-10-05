@@ -425,6 +425,9 @@ async function loadLazy(doc) {
  */
 function loadDelayed() {
   import('./consent-check.js');
+  import('./brand-concierge.js').then(({ default: loadBrandConcierge }) => {
+    loadBrandConcierge();
+  });
   // load anything that can be postponed to the latest here
 }
 
