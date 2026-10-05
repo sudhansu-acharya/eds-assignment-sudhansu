@@ -59,6 +59,11 @@ async function install() {
     edgeBasePath: 'ee',
     datastreamId: '1721b156-01d1-446a-92f4-6fb4934d4abd',
     orgId: '0B6930256441790E0A495FFE@AdobeOrg',
+    conversation: {
+      // Match the concierge's Prod (VA7) deployment, not the nearest Edge region.
+      region: 'va7',
+      stickyConversationSession: false,
+    },
     debugEnabled: false,
     idMigrationEnabled: false,
     thirdPartyCookiesEnabled: false,
@@ -66,11 +71,16 @@ async function install() {
   });
 
   await window.alloy('sendEvent', {});
-  window.adobe.concierge.bootstrap({
+  await window.adobe.concierge.bootstrap({
     instanceName: 'alloy',
     stylingConfigurations: window.styleConfiguration,
     selector: '#brand-concierge-mount',
-    stickySession: false,
+    onEvent: (event) => {
+      if (event.eventType === 'error:occurred') {
+        // eslint-disable-next-line no-console
+        console.error('Brand Concierge request failed:', event.data.errorMessage);
+      }
+    },
   });
 }
 

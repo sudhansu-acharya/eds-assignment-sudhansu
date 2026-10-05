@@ -25,6 +25,33 @@ npm i
 npm run lint
 ```
 
+## Brand Concierge
+
+The integration in `scripts/brand-concierge.js` loads on `/us/en` and its child
+pages only after consent. The current consent implementation is a test stub;
+use `/us/en?consent=accept` to enable Concierge locally.
+
+Conversation requests are explicitly routed to `va7` to match the concierge's
+**Prod (VA7)** deployment. Standard page events still use the nearest Edge data
+center. Session persistence is configured with Web SDK's
+`conversation.stickyConversationSession`, not a Web Client bootstrap option.
+
+If the chat still returns an error, check the browser Network panel for the
+failed conversation request and its response. Confirm in Adobe Experience
+Platform that datastream `1721b156-01d1-446a-92f4-6fb4934d4abd` is enabled for
+Brand Concierge and points to the published concierge in the correct sandbox
+and organization (`0B6930256441790E0A495FFE@AdobeOrg`). Working in the console's
+Design preview alone does not confirm that the website deployment is published
+and configured. Client errors are also reported in the browser console; submitted
+queries are not logged by the site's event callback.
+
+Offline integration regression tests use Node's built-in test runner and mock
+the Adobe scripts without downloading or executing them:
+
+```sh
+node --test test/brand-concierge.test.cjs
+```
+
 ## Local development
 
 1. Create a new repository based on the `aem-boilerplate` template
