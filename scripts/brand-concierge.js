@@ -1,3 +1,6 @@
+import { loadCSS } from './aem.js';
+import createConciergeShell from './concierge-shell.js';
+
 const SCRIPTS = [
   'https://cdn1.adoberesources.net/alloy/2.32.0/alloy.min.js',
   'https://experience.adobe.net/solutions/experience-platform-brand-concierge-web-agent/static-assets/main.js',
@@ -5,6 +8,7 @@ const SCRIPTS = [
 const STYLE_CONFIGURATION = '/scripts/styling-config-6aa0fe1c89d19d61e7598a59.json';
 
 let loading;
+let shell;
 
 function loadScript(src) {
   return new Promise((resolve, reject) => {
@@ -36,10 +40,8 @@ async function loadStyleConfiguration() {
 }
 
 async function install() {
-  const mount = document.createElement('div');
-  mount.id = 'brand-concierge-mount';
-  mount.className = 'brand-concierge';
-  document.body.append(mount);
+  await loadCSS('/styles/brand-concierge.css');
+  shell = createConciergeShell();
 
   prepareAlloy();
   await loadStyleConfiguration();
@@ -76,6 +78,7 @@ async function install() {
     stylingConfigurations: window.styleConfiguration,
     selector: '#brand-concierge-mount',
     onEvent: (event) => {
+      shell.onEvent(event);
       if (event.eventType === 'error:occurred') {
         // eslint-disable-next-line no-console
         console.error('Brand Concierge request failed:', event.data.errorMessage);
@@ -87,6 +90,7 @@ async function install() {
 function loadAfterConsent() {
   if (window.wkndConciergeConsent !== true || loading) return;
   loading = install().catch((error) => {
+    shell?.fail();
     // eslint-disable-next-line no-console
     console.error('Brand Concierge failed to load:', error);
   });

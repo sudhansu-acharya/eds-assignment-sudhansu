@@ -7,7 +7,7 @@ const { test } = require('node:test');
 const source = fs.readFileSync(
   path.join(__dirname, '..', 'scripts', 'brand-concierge.js'),
   'utf8',
-).replace('export default function', 'function');
+).replace(/^import .*;\r?\n/gm, '').replace('export default function', 'function');
 
 function setup({ consent = true, pathname = '/us/en', bootstrapError, styleOk = true } = {}) {
   const calls = [];
@@ -31,6 +31,11 @@ function setup({ consent = true, pathname = '/us/en', bootstrapError, styleOk = 
     addEventListener: (name, callback) => { listeners.set(name, callback); },
   };
   const context = vm.createContext({
+    loadCSS: async () => {},
+    createConciergeShell: () => {
+      mounts.push({});
+      return { onEvent: () => {}, fail: () => {} };
+    },
     window,
     document: {
       createElement: () => ({}),
@@ -64,7 +69,7 @@ test('routes conversation requests to the concierge VA7 deployment', async () =>
   assert.equal(command, 'configure');
   assert.equal(config.conversation.region, 'va7');
   assert.equal(config.conversation.stickyConversationSession, false);
-  assert.equal(config.datastreamId, '1721b156-01d1-446a-92f4-6fb4934d4abd');
+  assert.equal(config.datastreamId, '81f2903c-ce3a-4557-a8a6-eac3f07f9021');
   assert.equal(config.orgId, '0B6930256441790E0A495FFE@AdobeOrg');
   assert.equal(config.defaultConsent, 'in');
   assert.equal(app.calls[1][0], 'sendEvent');

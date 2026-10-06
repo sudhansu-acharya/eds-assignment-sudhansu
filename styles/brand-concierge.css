@@ -1,0 +1,150 @@
+.concierge-shell .concierge-shell-panel {
+  box-sizing: border-box;
+  position: fixed;
+  inset: auto 16px 24px;
+  width: min(900px, calc(100% - 32px));
+  max-width: none;
+  max-height: calc(100dvh - 32px);
+  margin: 0 auto;
+  padding: 12px 172px 12px 12px;
+  border: 3px solid #ffeb00;
+  border-radius: 40px;
+  background: #fff;
+  color: #202020;
+  box-shadow: 0 4px 24px rgb(0 0 0 / 25%);
+}
+
+.concierge-shell .concierge-shell-header {
+  display: none;
+}
+
+.concierge-shell .concierge-shell-status {
+  margin: 8px;
+}
+
+.concierge-shell button.concierge-shell-expand,
+.concierge-shell button.concierge-shell-dismiss {
+  position: absolute;
+  right: 84px;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 6px 10px;
+  margin: 0;
+  font-size: 12px;
+  border-radius: 20px;
+  background: #202020;
+  color: #fff;
+  cursor: pointer;
+}
+
+.concierge-shell button.concierge-shell-dismiss {
+  right: 12px;
+}
+
+.concierge-shell:not(.is-expanded) .brand-concierge {
+  --main-container-background: transparent;
+  --input-box-shadow: none;
+  --welcome-padding: 0;
+  --input-font-size: 1rem;
+}
+
+.concierge-shell:not(.is-expanded) .brand-concierge-container,
+.concierge-shell:not(.is-expanded) .chat-interface,
+.concierge-shell:not(.is-expanded) .brand-concierge-flex-wrapper {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  max-width: none !important;
+  gap: 0 !important;
+}
+
+.concierge-shell:not(.is-expanded) .chat-interface > :not(.input-section),
+.concierge-shell:not(.is-expanded) .disclaimer-message,
+.concierge-shell:not(.is-expanded) .scroll-to-bottom,
+.concierge-shell:not(.is-expanded).input-unavailable .brand-concierge {
+  display: none !important;
+}
+
+.concierge-shell:not(.is-expanded) .input-section {
+  position: static !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.concierge-shell.is-expanded .concierge-shell-panel {
+  inset: 0;
+  width: min(1100px, calc(100% - 32px));
+  height: min(800px, calc(100dvh - 32px));
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+}
+
+.concierge-shell .concierge-shell-panel::backdrop {
+  background: rgb(0 0 0 / 55%);
+}
+
+.concierge-shell.is-expanded .concierge-shell-header {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.concierge-shell .concierge-shell-header h2 {
+  margin: 0;
+  font-size: 24px;
+}
+
+.concierge-shell .concierge-shell-minimize {
+  margin: 0;
+  background: #202020;
+  color: #fff;
+  cursor: pointer;
+}
+
+.concierge-shell.is-expanded .concierge-shell-expand,
+.concierge-shell.is-expanded .concierge-shell-dismiss {
+  display: none;
+}
+
+.concierge-shell .concierge-shell-reopen {
+  position: fixed;
+  z-index: 100;
+  right: 24px;
+  bottom: 24px;
+  margin: 0;
+  border: 2px solid #ffeb00;
+  border-radius: 30px;
+  background: #202020;
+  color: #fff;
+  cursor: pointer;
+}
+
+.concierge-shell [hidden] {
+  display: none !important;
+}
+
+.concierge-shell button:focus-visible {
+  outline: 3px solid #1473e6;
+  outline-offset: 3px;
+}
+
+body.concierge-shell-open {
+  overflow: hidden;
+}
+
+@media (width < 600px) {
+  .concierge-shell.is-expanded .concierge-shell-panel {
+    width: calc(100% - 16px);
+    height: calc(100dvh - 16px);
+    max-height: calc(100dvh - 16px);
+  }
+}

@@ -38,7 +38,7 @@ center. Session persistence is configured with Web SDK's
 
 If the chat still returns an error, check the browser Network panel for the
 failed conversation request and its response. Confirm in Adobe Experience
-Platform that datastream `1721b156-01d1-446a-92f4-6fb4934d4abd` is enabled for
+Platform that datastream `81f2903c-ce3a-4557-a8a6-eac3f07f9021` is enabled for
 Brand Concierge and points to the published concierge in the correct sandbox
 and organization (`0B6930256441790E0A495FFE@AdobeOrg`). Working in the console's
 Design preview alone does not confirm that the website deployment is published
@@ -50,6 +50,27 @@ the Adobe scripts without downloading or executing them:
 
 ```sh
 node --test test/brand-concierge.test.cjs
+```
+
+### Compact chat
+
+After consent, Concierge's own input appears in a fixed bottom bar. Submitting
+opens a modal through the `query:submitted` callback, so the question is sent
+once by the existing Web Client. Open chat also expands it without a question.
+Minimize, Escape and backdrop clicks return to the bar; Dismiss hides it and
+leaves an Ask WKND button. The same client stays mounted across these actions.
+
+`scripts/concierge-shell.js` owns the controls and focus handling;
+`styles/brand-concierge.css` scopes the presentation. Compact mode styles the
+Web Client's `.input-section` / `.chat-interface` markup; check those selectors
+after vendor updates. If input markup is unavailable, Open chat remains available.
+The existing consent gate and page scope are unchanged. Cross-page conversation
+persistence is still disabled.
+
+Browser interaction coverage (uses installed Chrome):
+
+```sh
+node --test test/brand-concierge.test.cjs test/concierge-shell.test.cjs
 ```
 
 ## Local development
