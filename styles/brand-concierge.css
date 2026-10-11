@@ -18,6 +18,11 @@
   display: none;
 }
 
+.concierge-shell .bc-card__image {
+  background-size: contain !important;
+  background-repeat: no-repeat !important;
+}
+
 .concierge-shell .concierge-shell-status {
   margin: 8px;
 }

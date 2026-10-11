@@ -52,6 +52,28 @@ the Adobe scripts without downloading or executing them:
 node --test test/brand-concierge.test.cjs
 ```
 
+### Page-specific deployment
+
+Only `/us/en/magazine/guide-la-skateparks` uses Concierge
+`6acbc0a2dea7961321604bd3`: datastream
+`1ba491a9-198f-4cea-99a4-b26c888cecc3`, organization
+`B4A122FD69126FF30A495FB9@AdobeOrg`, VA7, Web SDK 2.35.1, and
+`scripts/styling-config-6acbc0a2dea7961321604bd3.json`.
+Other `/us/en` pages retain the existing deployment and Web SDK 2.32.0.
+Both deployments use the same consent gate and compact chat controls.
+Debug logging stays disabled, and cross-page session persistence stays disabled.
+
+In the new Concierge's published deployment, configure this website surface:
+
+- Domain: `main--eds-assignment-sudhansu--sudhansu-acharya.aem.live`
+- Path: `/us/en/magazine/guide-la-skateparks`
+
+Add the preview domain separately if testing on `.aem.page`. Test the article
+with `?consent=accept`; the query string is not part of the surface path.
+The supplied styling export still contains a placeholder privacy-policy URL;
+replace it with your approved policy in the Concierge console and re-export
+the styling before production use.
+
 ### Compact chat
 
 After consent, Concierge's own input appears in a fixed bottom bar. Submitting

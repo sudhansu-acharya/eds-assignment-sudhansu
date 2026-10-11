@@ -1,11 +1,20 @@
 import { loadCSS } from './aem.js';
 import createConciergeShell from './concierge-shell.js';
 
-const SCRIPTS = [
-  'https://cdn1.adoberesources.net/alloy/2.32.0/alloy.min.js',
-  'https://experience.adobe.net/solutions/experience-platform-brand-concierge-web-agent/static-assets/main.js',
-];
-const STYLE_CONFIGURATION = '/scripts/styling-config-6aa0fe1c89d19d61e7598a59.json';
+const DEFAULT_DEPLOYMENT = {
+  sdkVersion: '2.32.0',
+  styleConfiguration: '/scripts/styling-config-6aa0fe1c89d19d61e7598a59.json',
+  datastreamId: '81f2903c-ce3a-4557-a8a6-eac3f07f9021',
+  orgId: '0B6930256441790E0A495FFE@AdobeOrg',
+  region: 'va7',
+};
+const SKATEPARKS_DEPLOYMENT = {
+  sdkVersion: '2.35.1',
+  styleConfiguration: '/scripts/styling-config-6acbc0a2dea7961321604bd3.json',
+  datastreamId: '1ba491a9-198f-4cea-99a4-b26c888cecc3',
+  orgId: 'B4A122FD69126FF30A495FB9@AdobeOrg',
+  region: 'va7',
+};
 
 let loading;
 let shell;
@@ -33,19 +42,25 @@ function prepareAlloy() {
   window.alloy.q = [];
 }
 
-async function loadStyleConfiguration() {
-  const response = await fetch(STYLE_CONFIGURATION);
+async function loadStyleConfiguration(url) {
+  const response = await fetch(url);
   if (!response.ok) throw new Error('Brand Concierge style configuration failed to load');
   window.styleConfiguration = await response.json();
 }
 
 async function install() {
+  const deployment = window.location.pathname === '/us/en/magazine/guide-la-skateparks'
+    ? SKATEPARKS_DEPLOYMENT : DEFAULT_DEPLOYMENT;
+  const scripts = [
+    `https://cdn1.adoberesources.net/alloy/${deployment.sdkVersion}/alloy.min.js`,
+    'https://experience.adobe.net/solutions/experience-platform-brand-concierge-web-agent/static-assets/main.js',
+  ];
   await loadCSS('/styles/brand-concierge.css');
   shell = createConciergeShell();
 
   prepareAlloy();
-  await loadStyleConfiguration();
-  await SCRIPTS.reduce(
+  await loadStyleConfiguration(deployment.styleConfiguration);
+  await scripts.reduce(
     (chain, src) => chain.then(() => loadScript(src)),
     Promise.resolve(),
   );
@@ -59,11 +74,11 @@ async function install() {
     defaultConsent: 'in',
     edgeDomain: 'edge.adobedc.net',
     edgeBasePath: 'ee',
-    datastreamId: '81f2903c-ce3a-4557-a8a6-eac3f07f9021',
-    orgId: '0B6930256441790E0A495FFE@AdobeOrg',
+    datastreamId: deployment.datastreamId,
+    orgId: deployment.orgId,
     conversation: {
       // Match the concierge's Prod (VA7) deployment, not the nearest Edge region.
-      region: 'va7',
+      region: deployment.region,
       stickyConversationSession: false,
     },
     debugEnabled: false,
