@@ -9,7 +9,9 @@ const source = fs.readFileSync(
   'utf8',
 ).replace(/^import .*;\r?\n/gm, '').replace('export default function', 'function');
 
-function setup({ consent = true, pathname = '/us/en', bootstrapError, styleOk = true } = {}) {
+function setup({
+  consent = true, pathname = '/us/en', bootstrapError, styleOk = true,
+} = {}) {
   const calls = [];
   const scripts = [];
   const styleRequests = [];
@@ -56,13 +58,20 @@ function setup({ consent = true, pathname = '/us/en', bootstrapError, styleOk = 
   });
   vm.runInContext(source, context);
   return {
-    window, calls, scripts, styleRequests, mounts, errors, listeners, styling,
+    window,
+    calls,
+    scripts,
+    styleRequests,
+    mounts,
+    errors,
+    listeners,
+    styling,
     load: () => context.loadBrandConcierge(),
   };
 }
 
 async function settle() {
-  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => { setImmediate(resolve); });
 }
 
 test('routes conversation requests to the concierge VA7 deployment', async () => {
@@ -106,11 +115,11 @@ test('uses the new deployment only on the exact skateparks article', async () =>
 });
 
 test('keeps the default deployment on other magazine pages and similar paths', async () => {
-  for (const pathname of [
+  await Promise.all([
     '/us/en/magazine',
     '/us/en/magazine/guide-la-skateparks-other',
     '/us/en/magazine/guide-la-skateparks/child',
-  ]) {
+  ].map(async (pathname) => {
     const app = setup({ pathname });
     app.load();
     await settle();
@@ -118,17 +127,16 @@ test('keeps the default deployment on other magazine pages and similar paths', a
     assert.equal(app.calls[0][1].orgId, '0B6930256441790E0A495FFE@AdobeOrg');
     assert.equal(app.scripts[0], 'https://cdn1.adoberesources.net/alloy/2.32.0/alloy.min.js');
     assert.deepEqual(app.styleRequests, ['/scripts/styling-config-6aa0fe1c89d19d61e7598a59.json']);
-  }
+  }));
 });
 
-test('gates the skateparks deployment on consent and installs it once', async () => {
+test('loads the skateparks deployment automatically without consent parameters, once', async () => {
   const app = setup({ consent: false, pathname: '/us/en/magazine/guide-la-skateparks' });
   app.load();
   await settle();
-  assert.equal(app.scripts.length, 0);
-  assert.equal(app.styleRequests.length, 0);
-  app.window.wkndConciergeConsent = true;
-  app.listeners.get('wknd:concierge-consent-granted')();
+  assert.equal(app.scripts.length, 2);
+  assert.equal(app.styleRequests.length, 1);
+  assert.equal(app.listeners.size, 0);
   app.load();
   await settle();
   assert.equal(app.calls.length, 3);
@@ -136,16 +144,17 @@ test('gates the skateparks deployment on consent and installs it once', async ()
   assert.equal(app.calls[0][1].datastreamId, '1ba491a9-198f-4cea-99a4-b26c888cecc3');
 });
 
-test('does not load third-party scripts until consent is granted', async () => {
-  const app = setup({ consent: false });
-  app.load();
-  await settle();
-  assert.equal(app.scripts.length, 0);
-  assert.equal(app.calls.length, 0);
-  app.window.wkndConciergeConsent = true;
-  app.listeners.get('wknd:concierge-consent-granted')();
-  await settle();
-  assert.equal(app.calls.length, 3);
+test('loads the homepage automatically without changing the separate consent state', async () => {
+  await Promise.all([false, undefined].map(async (consent) => {
+    const app = setup({ consent: false });
+    app.window.wkndConciergeConsent = consent;
+    app.load();
+    await settle();
+    assert.equal(app.scripts.length, 2);
+    assert.equal(app.calls.length, 3);
+    assert.equal(app.window.wkndConciergeConsent, consent);
+    assert.equal(app.listeners.size, 0);
+  }));
 });
 
 test('does not install on unrelated paths', async () => {
@@ -157,10 +166,9 @@ test('does not install on unrelated paths', async () => {
   assert.equal(app.calls.length, 0);
 });
 
-test('installs only once on child pages even with repeated consent events', async () => {
+test('installs only once on child pages with repeated loader calls', async () => {
   const app = setup({ pathname: '/us/en/magazine' });
   app.load();
-  app.listeners.get('wknd:concierge-consent-granted')();
   app.load();
   await settle();
   assert.equal(app.mounts.length, 1);

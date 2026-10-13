@@ -28,8 +28,13 @@ npm run lint
 ## Brand Concierge
 
 The integration in `scripts/brand-concierge.js` loads on `/us/en` and its child
-pages only after consent. The current consent implementation is a test stub;
-use `/us/en?consent=accept` to enable Concierge locally.
+pages automatically; no `?consent=accept` parameter is required. Open `/us/en`
+or `/us/en/magazine/guide-la-skateparks` directly.
+
+Concierge no longer waits for the demo consent flag or event and configures its
+SDK with `defaultConsent: 'in'`. The separate `scripts/consent-check.js` flow for
+analytics/martech remains unchanged. Automatic loading is not evidence of user
+consent; integrate your approved CMP if consent is required for this deployment.
 
 Conversation requests are explicitly routed to `va7` to match the concierge's
 **Prod (VA7)** deployment. Standard page events still use the nearest Edge data
@@ -60,7 +65,7 @@ Only `/us/en/magazine/guide-la-skateparks` uses Concierge
 `B4A122FD69126FF30A495FB9@AdobeOrg`, VA7, Web SDK 2.35.1, and
 `scripts/styling-config-6acbc0a2dea7961321604bd3.json`.
 Other `/us/en` pages retain the existing deployment and Web SDK 2.32.0.
-Both deployments use the same consent gate and compact chat controls.
+Both deployments load automatically and use the same compact chat controls.
 Debug logging stays disabled, and cross-page session persistence stays disabled.
 
 In the new Concierge's published deployment, configure this website surface:
@@ -69,14 +74,14 @@ In the new Concierge's published deployment, configure this website surface:
 - Path: `/us/en/magazine/guide-la-skateparks`
 
 Add the preview domain separately if testing on `.aem.page`. Test the article
-with `?consent=accept`; the query string is not part of the surface path.
+using its direct URL; no consent query parameter is needed.
 The supplied styling export still contains a placeholder privacy-policy URL;
 replace it with your approved policy in the Concierge console and re-export
 the styling before production use.
 
 ### Compact chat
 
-After consent, Concierge's own input appears in a fixed bottom bar. Submitting
+On page load, Concierge's own input appears in a fixed bottom bar. Submitting
 opens a modal through the `query:submitted` callback, so the question is sent
 once by the existing Web Client. Open chat also expands it without a question.
 Minimize, Escape and backdrop clicks return to the bar; Dismiss hides it and
@@ -86,7 +91,7 @@ leaves an Ask WKND button. The same client stays mounted across these actions.
 `styles/brand-concierge.css` scopes the presentation. Compact mode styles the
 Web Client's `.input-section` / `.chat-interface` markup; check those selectors
 after vendor updates. If input markup is unavailable, Open chat remains available.
-The existing consent gate and page scope are unchanged. Cross-page conversation
+The existing page scope is unchanged. Cross-page conversation
 persistence is still disabled.
 
 Browser interaction coverage (uses installed Chrome):

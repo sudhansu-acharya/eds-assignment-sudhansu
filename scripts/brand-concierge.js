@@ -69,7 +69,6 @@ async function install() {
     throw new Error('Brand Concierge configuration or bootstrap is unavailable');
   }
 
-  // This function runs only after the site has confirmed the required consent.
   await window.alloy('configure', {
     defaultConsent: 'in',
     edgeDomain: 'edge.adobedc.net',
@@ -102,8 +101,8 @@ async function install() {
   });
 }
 
-function loadAfterConsent() {
-  if (window.wkndConciergeConsent !== true || loading) return;
+function loadOnce() {
+  if (loading) return;
   loading = install().catch((error) => {
     shell?.fail();
     // eslint-disable-next-line no-console
@@ -115,8 +114,5 @@ export default function loadBrandConcierge() {
   // Include /us/en and its child pages; exclude unrelated site paths.
   if (!/^\/us\/en(?:\/|$)/.test(window.location.pathname)) return;
 
-  window.addEventListener('wknd:concierge-consent-granted', loadAfterConsent, {
-    once: true,
-  });
-  loadAfterConsent();
+  loadOnce();
 }
